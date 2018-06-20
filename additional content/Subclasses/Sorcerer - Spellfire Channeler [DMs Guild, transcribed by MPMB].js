@@ -1,20 +1,19 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Sorcerer, called "Spellfire Channeler"
-				This is taken from the 'Forgotten Realms Archetypes II: Champions of Mystery' made by Jeremy Forbing & Leo David Pakirdjian (http://www.dmsguild.com/product/211385)
+				This is taken from the 'Forgotten Realms Archetypes II: Champions of Mystery' made by Jeremy Forbing & Leo David Pakirdjian (https://www.dmsguild.com/product/211385)
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creators of this content (Jeremy Forbing & Leo David Pakirdjian) and download their material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Jeremy%20Forbing  &  http://www.dmsguild.com/browse.php?x=0&y=0&author=Leo%20David%20Pakirdjian
+	Please support the creators of this content (Jeremy Forbing & Leo David Pakirdjian) and download their material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Jeremy%20Forbing  &  https://www.dmsguild.com/browse.php?x=0&y=0&author=Leo%20David%20Pakirdjian
 	
 	Note:		Because this subclass is so verbose, not all features will fit into the Class Features section of the character sheet and the field will overflow!
 	
@@ -28,7 +27,8 @@ SourceList["FRA2"] = {
 	name : "Forgotten Realms Archetypes II: Champions of Mystery",
 	abbreviation : "FRA2",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/211385/"
+	url : "https://www.dmsguild.com/product/211385/",
+	date "2017/05/07"
 };
 
 AddSubClass("sorcerer", "spellfire channeler", {

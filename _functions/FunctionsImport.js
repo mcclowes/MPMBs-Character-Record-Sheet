@@ -400,12 +400,15 @@ function DirectImport(consoleTrigger) {
 	//ask the user for the file to import from
 	var importFromPath = DirectImport_Dialogue();
 	if (!importFromPath) return; //no reason to go on with this
-	
-	var closeAlert = false;
+
+	// initiate a progress bar, so there is at least something
+	var thermoTxt = thermoM("Importing directly from PDF...");
+
+	var closeAlert = false, IIerror;
 	try {
 		if (consoleTrigger && !MPMBImportFunctionsInstalled) {
-			global.docFrom = importFromPath[1] ? app.openDoc({cPath: importFromPath[0], oDoc: this}) : app.openDoc(importFromPath[0]);
 			global.docTo = this;
+			global.docFrom = importFromPath[1] ? app.openDoc({cPath: importFromPath[0], oDoc: this}) : app.openDoc(importFromPath[0]);
 			global.docTo.bringToFront();
 		} else {
 			MPMBOpenFile(this, importFromPath[0], importFromPath[1]);
@@ -426,7 +429,15 @@ function DirectImport(consoleTrigger) {
 			cMsg: closeAlert[1]
 		});
 	} else if (global.docFrom && global.docTo) { try { //we are good to go and import stuff!
+		// Update the progress bar and stop the calculations
+		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+		thermoM(0.25);
+		calcStop();
+
+		// First we need to reset the prototypes to the current sheet because Acrobat will use the ones from the latest sheet that was opened
+		global.docTo.setPrototypes();
 		var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
+		if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 		if (FromVersion < 12.999) { // give a warning about importing from a version that had all materials included automatically
 			var askUserIsSure = {
 				cTitle : "Continue with import?",
@@ -439,15 +450,15 @@ function DirectImport(consoleTrigger) {
 				throw "user stop";
 			};
 		};
+
+		IsNotImport = "no progress bar";
+		ignorePrereqs = true;
 		ResetAll(true, true); //first reset the current sheet to its initial state, but without the extra templates generated
 		Value("Opening Remember", "Yes");
 		IsNotImport = false;
-		ignorePrereqs = true;
-		//make sure no pop-up comes up with welcome text
+
+		// Make sure no pop-up comes up with welcome text
 		if (global.docFrom.getField("Opening Remember")) global.docFrom.Value("Opening Remember", "Yes");
-		
-		//make sure to remove the flatten function
-		if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
 		
 		var fromSheetTypePF = global.docFrom.info.SheetType ? (/printer friendly/i).test(global.docFrom.info.SheetType) : false;
 		var fromSheetTypeLR = global.docFrom.info.SheetType ? (/letter/i).test(global.docFrom.info.SheetType) : (global.docFrom.info.Title ? (/letter/i).test(global.docFrom.info.Title) : false);
@@ -455,13 +466,29 @@ function DirectImport(consoleTrigger) {
 		var bothCF = !typePF && !fromSheetTypePF;
 		var sameType = bothPF || (bothCF && fromSheetTypeLR === typeLR);
 		
+		// Make sure to remove the flattened state from the sheet to import from
+		if (FromVersion < 13) {
+			if (global.docFrom.getField("MakeMobileReady Remember") && global.docFrom.getField("MakeMobileReady Remember").value !== "") global.docFrom.MakeMobileReady(false);
+		} else {
+			global.docFrom.MakeMobileReady(false);
+		}
+		
 		//copy any custom script and run it
-		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : {};
+		var filesScriptFrom = global.docFrom.getField("User_Imported_Files.Stringified") && global.docFrom.getField("User_Imported_Files.Stringified").value !== "({})" ? eval(global.docFrom.getField("User_Imported_Files.Stringified").value) : false;
 		var filesScriptTo = eval(global.docTo.getField("User_Imported_Files.Stringified").value);
-		var filesScript = MergeRecursive(filesScriptFrom, filesScriptTo).toSource(); // add the old to the new, preferring the new if both have the same entries
-		global.docTo.getField("User_Imported_Files.Stringified").value = filesScript;
-		GetStringifieds();
-		if (ImportField("User Script") || filesScript !== "({})") {
+
+		if (filesScriptFrom) {
+			// add the old to the new, preferring the new if both have the same entries
+			var filesScriptToNms = [];
+			for (var toScr in filesScriptTo) filesScriptToNms.push(toScr.replace(/\d+\/\d+\/\d+ - /, ""));
+			for (var fromScr in filesScriptFrom) {
+				var fromScrNm = fromScr.replace(/\d+\/\d+\/\d+ - /, "");
+				if (filesScriptToNms.indexOf(fromScrNm) == -1) filesScriptTo[fromScr] = filesScriptFrom[fromScr];
+			};
+			global.docTo.getField("User_Imported_Files.Stringified").value = filesScriptTo.toSource();
+			GetStringifieds();
+		}
+		if (ImportField("User Script") || filesScriptFrom) {
 			InitiateLists();
 			RunUserScript(true);
 			amendPsionicsToSpellsList();
@@ -538,9 +565,21 @@ function DirectImport(consoleTrigger) {
 		ImportField("Decimal Separator"); ImportField("DateFormat_Remember");
 		
 		//set the text options
-		if (ImportField("WhiteoutRemember")) ToggleWhiteout(eval(What("WhiteoutRemember")));
+		if (FromVersion < 13) {
+			if (global.docFrom.getField("WhiteoutRemember")) ToggleWhiteout(eval(global.docFrom.What("WhiteoutRemember")));
+			var FontSize_Remember_field = global.docFrom.getField("FontSize Remember") ? global.docFrom.getField("FontSize Remember").value : undefined;
+			if ((bothPF || bothCF || FontSize_Remember_field === 0) && FontSize_Remember_field != undefined) ToggleTextSize(FontSize_Remember_field);
+			LayerVisibilityOptions(false, global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value : undefined);
+			ToggleBlueText(global.docFrom.getField("Extra.Layers Remember") ? global.docFrom.getField("Extra.Layers Remember").value === "Yes" : false);
+		} else {
+			ToggleWhiteout(global.docFrom.CurrentVars.whiteout);
+			ToggleTextSize(global.docFrom.CurrentVars.fontsize);
+			LayerVisibilityOptions(false, global.docFrom.CurrentVars.vislayers);
+			ToggleBlueText(global.docFrom.CurrentVars.bluetxt);
+		}
+		SetStringifieds("vars");
+
 		if (bothPF && ImportField("BoxesLinesRemember")) ShowCalcBoxesLines(What("BoxesLinesRemember"));
-		if ((bothPF || bothCF || global.docFrom.getField("FontSize Remember").value === 0) && ImportField("FontSize Remember")) ToggleTextSize(What("FontSize Remember"));
 		if ((bothPF || bothCF) && global.docFrom.getField("Player Name").textFont !== global.docTo.getField("Player Name").textFont) ChangeFont(global.docFrom.getField("Player Name").textFont);
 		
 		//set the league remember toggle
@@ -605,9 +644,6 @@ function DirectImport(consoleTrigger) {
 		ImportField("Weight Carrying Capacity", {doVisiblity: true}, "Weight Carrying Capacity.Field"); ImportField("Weight Heavily Encumbered", {doVisiblity: true});
 		//set the weight remember fields
 		ImportField("Weight Remember Ammo Left"); ImportField("Weight Remember Ammo Right"); ImportField("Weight Remember Armor"); ImportField("Weight Remember Coins"); ImportField("Weight Remember Magic Items"); ImportField("Weight Remember Page2 Left"); ImportField("Weight Remember Page2 Middle"); ImportField("Weight Remember Page2 Right"); ImportField("Weight Remember Page3 Left"); ImportField("Weight Remember Page3 Right"); ImportField("Weight Remember Shield"); ImportField("Weight Remember Weapons");
-		
-		//set the visiblity on the third page
-		if (ImportField("Extra.Layers Remember")) LayerVisibilityOptions();
 		
 		//get the page layout of the sheet and copy it
 		var pagesLayout = {};
@@ -703,12 +739,9 @@ function DirectImport(consoleTrigger) {
 		
 		//set the ability scores and associated fields
 		for (var abiS in AbilityScores.current) {
-			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true});
+			ImportField(abiS); ImportField(abiS + " Remember"); ImportField(abiS + " ST Prof", {notTooltip: true}); ImportField(abiS + " ST Bonus", {notTooltip: true, notSubmitName: true}); ImportField(abiS + " ST Adv", {doReadOnly: true}); ImportField(abiS + " ST Dis", {doReadOnly: true}); Value(abiS + " Mod", Math.round((What(abiS) - 10.5) * 0.5));
 		};
 		ImportField("All ST Bonus", {notTooltip: true, notSubmitName: true});
-		
-		//now recalculate all the weapons, forcing them to re-do all attributes
-		forceReCalcWeapons = true; ReCalcWeapons();
 		
 		//set the ability save DC
 		ImportField("Spell DC 1 Mod", {notTooltip: true}); ImportField("Spell DC 1 Bonus", {notTooltip: true, notSubmitName: true});
@@ -953,27 +986,34 @@ function DirectImport(consoleTrigger) {
 		for (var i = 0; i < prefixA[0].length; i++) {
 			var prefixFrom = prefixA[0][i];
 			var prefixTo = prefixA[1][i];
-			
+
 			//set the visibility of the different elements
 			if (ImportField(prefixTo + "Companion.Layers.Remember", {notTooltip: true, notSubmitName: true}, prefixFrom + "Companion.Layers.Remember")) ShowCompanionLayer(prefixTo);
 			doChildren("Whiteout.Cnote", prefixFrom, prefixTo, false, true);
-			
+
 			//set the race
 			ImportField(prefixTo + "Comp.Race", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Race");
-			
+
+			//set companion ability scores and modifiers now, for coming automation might require it
+			for (var a = 0; a < AbilityScores.abbreviations.length; a++) {
+				var abiS = AbilityScores.abbreviations[a];
+				ImportField(prefixTo+"Comp.Use.Ability."+abiS+".Score", {notTooltip: true, notSubmitName: true}, prefixFrom+"Comp.Use.Ability."+abiS+".Score");
+				Value(prefixTo+"Comp.Use.Ability."+abiS+".Mod", Math.round((What(prefixTo+"Comp.Use.Ability."+abiS+".Score") - 10.5) * 0.5));
+			}
+
 			//set the type, if any
 			var compTypeFrom = global.docFrom.getField(prefixFrom + "Companion.Remember");
 			if (compTypeFrom && compTypeFrom.value) changeCompType(compTypeFrom.value, prefixTo);
-			
+
 			//Set some one-off fields
 			ImportField(prefixTo + "Comp.Type", {notTooltip: true, notSubmitName: true}, prefixFrom + "Comp.Type");
-			
+
 			//do the description fields
 			doChildren("Comp.Desc", prefixFrom, prefixTo);
-			
+
 			//do the bulk of the fields
-			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con/i);
-			
+			doChildren("Comp.Use", prefixFrom, prefixTo, /\.Score|\.Mod|Text|Calculated|Button|Init\.Dex|HD\.Con/i);
+
 			//do the BlueText fields
 			doChildren("BlueText.Comp.Use", prefixFrom, prefixTo);
 			
@@ -1162,12 +1202,12 @@ function DirectImport(consoleTrigger) {
 				}
 			};
 		};
-	//Some settings for the overall sheet
-		//set the bluetextfields
-		if (ImportField("BlueTextRemember")) ToggleBlueText(What("BlueTextRemember") === "Yes" ? "No" : "Yes");
-		
+	//Some settings for the overall sheet		
 		if (ImportField("Manual Attack Remember")) ToggleAttacks(What("Manual Attack Remember") === "Yes" ? "No" : "Yes");
 		ImportField("Manual Class Remember"); ImportField("Manual Race Remember"); ImportField("Manual Background Remember"); ImportField("Manual Feat Remember"); 
+
+	//Recalculate the weapons, for things might have changed since importing them
+		forceReCalcWeapons = true; ReCalcWeapons(true);
 		
 		//now that all the attacks of the first page and companion pages have been imported, set the attack colors
 		if (bothCF) {
@@ -1176,38 +1216,36 @@ function DirectImport(consoleTrigger) {
 		};
 		
 		//import the icons
-		var IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
+		IIerror = ImportIcons(pagesLayout, app.viewerType !== "Reader" && importFromPath[2]);
 	
 		// set the focus to the top of the first page
 		tDoc.getField("Player Name").setFocus();
 	} catch (error) {
 		if (error !== "user stop") {
-			var eText = "An error occured during importing:\n " + error + "\n ";
+			var eText = "An error occurred during importing:\n " + error + "\n ";
 			for (var e in error) eText += e + ": " + error[e] + ";\n ";
 			console.println(eText);
 			console.show();
 		};
 	};
-	};
-	
-	//close the document that was opened to import from (if any)
-	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
-		global.docFrom.dirty = false;
-		global.docFrom.closeDoc();
-	};
-	//remove the global objects so that they don't make a clutter
+	// signal the end of importing
 	IsNotImport = true;
 	ignorePrereqs = false;
-	if (global.docTo) delete global.docTo;
-	if (global.docFrom) delete global.docFrom;
 	if (IIerror && isNaN(IIerror)) app.alert(IIerror);
-	
+
 	// A pop-up to inform the user of the changes
 	if (!closeAlert) {
-		InitializeEverything(consoleTrigger, true);
-		tDoc.dirty = true;
-		
+		global.docTo.InitializeEverything(consoleTrigger, true);
+		global.docTo.dirty = true;
+		global.docTo.calcCont();
+		thermoTxt = thermoM("Importing from '" + global.docFrom.documentFileName + "'...");
+		thermoM(0.9);
+
 		var aText = "[Can't see the 'OK' button at the bottom? Use ENTER to close this dialog]\n\n";
+		if (app.viewerType !== "Reader" && importFromPath[2]) { // if icons were imported
+			aText += toUni("IMPORTANT: custom icons");
+			aText += "\nBecause you imported custom icons, the sheet will not work correctly right away. You will have to first save the sheet, close Adobe Acrobat completely, and then open the sheet again. The sheet needs to re-initialize for the import with custom icons to be completed!\n\n";
+		}
 		if (!sameType) {
 			aText += toUni("Sheet Types Differ");
 			aText += "\nYou seem to have imported from another type of sheet (i.e. not \'" + tDoc.info.SheetType + "\'). This will have the unfortunate side-effect that some things might not have been imported, because there aren't an equal amount of entries for all things on all of MPMB's sheet types. For example, there is room for 6 attacks on the 'Colorful-A4' sheet, but for only 5 on the other types.";
@@ -1240,11 +1278,18 @@ function DirectImport(consoleTrigger) {
 			nIcon : 3,
 			cTitle : "Some things to consider about the new sheet"
 		});
-	}
+		thermoStop(); // Stop progress bar
+	};
+	};
 	
-	tDoc.calculate = IsNotReset;
-	tDoc.delay = !IsNotReset;
-	if (IsNotReset) tDoc.calculateNow();
+	//close the document that was opened to import from (if any)
+	if (global.docFrom && global.docFrom.toString() === "[object Doc]") {
+		global.docFrom.dirty = false;
+		global.docFrom.closeDoc(true);
+	};
+	//remove the global objects so that they don't make a clutter
+	if (global.docTo) delete global.docTo;
+	if (global.docFrom) delete global.docFrom;
 };
 
 //a function to import a field from the global.docFrom
@@ -1327,7 +1372,7 @@ function ImportIcons(pagesLayout, viaSaving) {
 	var bothPF = typePF && fromSheetTypePF;
 	var bothCF = !typePF && !fromSheetTypePF;
 	var FromVersion = parseFloat(global.docFrom.info.SheetVersion);
-	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/b/ig, ""));
+	if (isNaN(FromVersion)) FromVersion = parseFloat(global.docFrom.info.SheetVersion.replace(/.*?(\d.*)/, "$1"));
 	if (FromVersion < 3.7) return true; //the form is of a version before there were any icon fields
 	
 	var IconArray = [
@@ -1513,18 +1558,13 @@ function Import(type) {
 	};
 	
 	
-	if (app.alert(AskFirst) !== 4) {
-		return;
-	}
+	if (app.alert(AskFirst) !== 4) return;
+
+	// Start progress bar and stop calculations
+	var thermoTxt = thermoM("Importing the data...");
+	calcStop();
 	
-	tDoc.delay = true;
-	tDoc.calculate = false;
-	
-	//if the sheet is currently flattened, undo that first
-	if (What("MakeMobileReady Remember") !== "") MakeMobileReady(false);
-	
-	thermoM("start"); //start a progress dialog
-	thermoM("Importing the data..."); //change the progress dialog text
+	MakeMobileReady(false); // Undo flatten, if needed
 	
 	templateA = [
 		["Template.extras.AScomp", What("Template.extras.AScomp")],
@@ -1547,41 +1587,39 @@ function Import(type) {
 		ignorePrereqs = false;
 	};
 	
+	GetStringifieds(); // Get the variables
+	
 	//set the values of the templates back
 	for (var i = 0; i < templateA.length; i++) {
 		Value(templateA[i][0], templateA[i][1]);
 	}
 	
 	thermoM(13/25); //increment the progress dialog's progress
-	thermoM("Getting the sheet ready..."); //change the progress dialog text
+	thermoTxt = thermoM("Getting the sheet ready...", false); //change the progress dialog text
 	
 	//set the layer visibility to what the imported field says
-	LayerVisibilityOptions(false);
+	LayerVisibilityOptions();
 	
 	//set the visibility of Honor/Sanity as imported
 	ShowHonorSanity();
 	
 	thermoM(14/25); //increment the progress dialog's progress
-	
-	tDoc.resetForm(["MakeMobileReady Remember"]); //make the sheet believe it is not flattened
+
+	if (CurrentVars.mobileset) CurrentVars.mobileset.active = false;
 	
 	thermoM(15/25); //increment the progress dialog's progress
 
 	//set the visiblity of the text lines as the imported remember field has been set to
-	if (What("WhiteoutRemember") !== false) {
-		ToggleWhiteout(false);
-	}
+	ToggleWhiteout(CurrentVars.whiteout);
 	
 	thermoM(16/25); //increment the progress dialog's progress
 
 	//set the text size for multiline fields as the imported remember field has been set to
-	if (What("FontSize Remember") !== (typePF ? 7 : 5.74)) {
-		ToggleTextSize(What("FontSize Remember"));
-	}
+	ToggleTextSize(CurrentVars.fontsize);
 	
 	thermoM(17/25); //increment the progress dialog's progress
 
-	//set the visiblity of the manual attack fiels the first page as the imported remember field has been set to
+	//set the visiblity of the manual attack fields on the first page as the imported remember field has been set to
 	if (What("Manual Attack Remember") !== "No") {
 		ToggleAttacks("No");
 	}
@@ -1615,9 +1653,7 @@ function Import(type) {
 	thermoM(19/25); //increment the progress dialog's progress
 
 	//set the visiblity of the Blue Text fields as the imported remember field has been set to
-	if (What("BlueTextRemember") !== "No") {
-		ToggleBlueText("No");
-	}
+	ToggleBlueText(CurrentVars.bluetxt);
 	
 	thermoM(20/25); //increment the progress dialog's progress
 
@@ -1662,7 +1698,7 @@ function Import(type) {
 		nType : 0
 	});
 
-	thermoM(); //stop any and all progress dialogs
+	thermoM(thermoTxt, true); // Stop progress bar
 	
 	//re-apply stuff just as when starting the sheet
 	InitializeEverything();
@@ -1929,9 +1965,11 @@ function AddUserScript(retResDia) {
 				dialog.end("next");
 			},
 			bFAQ: function(dialog) {
-				var results = dialog.store();
-				this.script = results["jscr"];
-				dialog.end("bfaq");
+				if (getFAQ(false, true)) {
+					dialog.end("bfaq");
+					var results = dialog.store();
+					this.script = results["jscr"];
+				}
 			},
 			bPre: function(dialog) {
 				var results = dialog.store();
@@ -2120,7 +2158,7 @@ function AddUserScript(retResDia) {
 		if (askForScripts === "bpre") {
 			diaIteration -= 1;
 		} else if (askForScripts === "bfaq") {
-			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+			getFAQ(["faq", "pdf"]);
 		} else if (askForScripts === "bcon") {
 			console.println("\nYour code has been copied below, but hasn't been commited/saved to the sheet!\nYou can run code here by selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".\n\n" + theUserScripts.join(""));
 			console.show();
@@ -2160,7 +2198,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 	var runIt = function(aScript, scriptName, isManual) {
 		var RequiredSheetVersion = function(inNumber) {
 			if (atStartup) return;
-			inNumber = parseFloat(inNumber);
+			inNumber = semVersToNmbr(inNumber);
 			if (!isNaN(inNumber) && inNumber > minSheetVersion) minSheetVersion = inNumber;
 		};
 		try {
@@ -2172,7 +2210,7 @@ function RunUserScript(atStartup, manualUserScripts) {
 			if (ScriptAtEnd.length > 0) ScriptsAtEnd = ScriptsAtEnd.concat(ScriptAtEnd);
 			if (minSheetVersion > sheetVersion) {
 				var failedTestMsg = {
-					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + minSheetVersion + "), and might thus not be compatible with this version of the sheet (v" + sheetVersion + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
+					cMsg : "The script '" + scriptName + "' reports that is was made for a newer version of the sheet (v" + nmbrToSemanticVersion(minSheetVersion) + "), and might thus not be compatible with this version of the sheet (v" + semVers + ").\n\nDo you want to continue using this script in the sheet? If you select no, the script will be removed.\n\nNote that you can update to the newer version of the sheet with the 'Get the Latest Version' bookmark!",
 					nIcon : 2,
 					cTitle : "Script was made for newer version!",
 					nType : 2
@@ -2242,10 +2280,10 @@ function RunUserScript(atStartup, manualUserScripts) {
 
 // Define some custom import script functions as document-level functions so custom scripts including these can still be run from console
 function RequiredSheetVersion(versNmbr) {
-	var inNumber = parseFloat(versNmbr);
+	var inNumber = semVersToNmbr(versNmbr);
 	if (!inNumber || isNaN(inNumber) || inNumber <= sheetVersion) return;
 	app.alert({
-		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + inNumber + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + sheetVersion + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
+		cMsg : "The RequiredSheetVersion() function in your script suggests that the script is made for v" + nmbrToSemanticVersion(inNumber) + " of MPMB's Character Record Sheets.\nTake not that you are executing this script in a sheet of v" + semVers + " and might thus not work properly.\nOr perhaps you are using the RequiredSheetVersion() function wrongly.",
 		nIcon : 2,
 		cTitle : "Script was made for newer version!"
 	});
@@ -2330,6 +2368,20 @@ function AddWarlockInvocation(invocName, invocObj) {
 	warInv[useName.toLowerCase()] = invocObj;
 };
 
+// a way to add a warlock pact boon without conflicts; boonName is how it will appear in the menu
+function AddWarlockPactBoon(boonName, boonObj) {
+	var warInv = ClassList.warlock.features["pact boon"];
+	if (!warInv || (warInv.choices.indexOf(boonName) !== -1 && warInv[boonName.toLowerCase()].source && boonObj.source && warInv[boonName.toLowerCase()].source.toSource() === boonObj.source.toSource())) return; // the exact same thing is being added again, so skip it
+	var useName = boonName;
+	var suffix = 1;
+	while (warInv.choices.indexOf(useName) !== -1) {
+		suffix += 1;
+		useName = boonName + " [" + suffix + "]";
+	};
+	warInv.choices.push(useName);
+	warInv[useName.toLowerCase()] = boonObj;
+};
+
 // a way to add fighting styles to multiple classes; fsName is how it will appear in the menu
 function AddFightingStyle(classArr, fsName, fsObj) {
 	var addFSToThis = function(feaObj, feaNm) {
@@ -2357,19 +2409,37 @@ function ImportUserScriptFile(filePath) {
 	var iFileStream = filePath ? util.readFileIntoStream(filePath) : util.readFileIntoStream();
 	if (!iFileStream) return false;
 	var iFileCont = util.stringFromStream(iFileStream);
-	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? 
-		util.printd("yyyy/mm/dd", new Date()) + " - " + iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : 
-		util.printd("yyyy/mm/dd hh:mm", new Date()) + " - " + "no iFileName";
-	if (CurrentScriptFiles[iFileName]) {
+	if ((/<(!DOCTYPE )html/i).test(iFileCont)) { //import is probably a HTML file
+		app.alert({
+			cTitle : "Please select a JavaScript file",
+			cMsg : "The file you imported is a HTML document (a website). Please make sure that the file you select to import is JavaScript.\n\nYou can create a JavaScript file by copying code, pasting it into your favourite plain-text editor (such as Notepad on Windows), and subsequently saving it. You don't necessarily need the .js file extension for the file to be importable into this character sheet." + (!isWindows ? "" : "\n\nNote that you can input an URL into the 'Open file' dialog, but that URL has to point to a JavaScript file. A good example of an URL that points to a JavaScript file is the URL you are send to when you select the 'Raw' option on GitHub: https://raw.githubusercontent.com/") + "\n\nThe file you selected will not be imported.",
+			nIcon : 1
+		});
+		return false;
+	};
+	var iFileName = (/var iFileName ?= ?"([^"]+)";/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?"([^"]+)";/)[1] : (/var iFileName ?= ?'([^']+)';/).test(iFileCont) ? iFileCont.match(/var iFileName ?= ?'([^']+)';/)[1] : false;
+	var useFileName = iFileName ? util.printd("yyyy/mm/dd", new Date()) + " - " + iFileName : util.printd("yyyy/mm/dd HH:mm", new Date()) + " - " + "no iFileName";
+	var iFileNameMatch = false;
+	if (iFileName) {
+		for (var aFileName in CurrentScriptFiles) {
+			var endFileName = aFileName.replace(/\d+\/\d+\/\d+ - /, "");
+			if (endFileName.toLowerCase() === iFileName.toLowerCase()) {
+				iFileNameMatch = aFileName;
+				break;
+			};
+		};
+	};
+	if (iFileNameMatch && CurrentScriptFiles[iFileNameMatch]) {
 		var askToOverwrite = {
-			cMsg : "There is already a file by the name \"" + iFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
+			cMsg : "There is already a file by the name \"" + endFileName + "\", do you want to overwrite it?\n\nIf you select 'No', the file will not be changed.",
 			nIcon : 2, //question mark
 			cTitle : "File already exists, overwrite it?",
 			nType : 2, //Yes-No
 		};
 		if (app.alert(askToOverwrite) !== 4) return false;
+		delete CurrentScriptFiles[iFileNameMatch];
 	};
-	CurrentScriptFiles[iFileName] = iFileCont;
+	CurrentScriptFiles[useFileName] = iFileCont;
 	SetStringifieds("scriptfiles");
 	return true;
 };
@@ -2399,9 +2469,11 @@ function ImportScriptFileDialog(retResDia) {
 		},
 		commit: function(dialog) {},
 		bFAQ: function(dialog) {
-			var results = dialog.store();
-			this.script = results["jscr"];
-			dialog.end("bfaq");
+			if (getFAQ(false, true)) {
+				dialog.end("bfaq");
+				var results = dialog.store();
+				this.script = results["jscr"];
+			}
 		},
 		bWhy: function(dialog) { contactMPMB("additions"); },
 		bCoC: function(dialog) { contactMPMB("subreddit"); },
@@ -2414,7 +2486,10 @@ function ImportScriptFileDialog(retResDia) {
 		scrF: function(dialog) {
 			var allElem = dialog.store()["scrF"];
 			var remElem = GetPositiveElement(allElem);
-			if (remElem) dialog.load({ bRem : "Delete file '" + remElem + "'"});
+			if (remElem) {
+				var remElemNm = "'" + (remElem.length > 50 ? remElem.substr(0,50) + "..." : remElem) + "'";
+				dialog.load({ bRem : "Delete file " + remElemNm});
+			};
 		},
 		bAdd: function(dialog) {
 			ImportUserScriptFile();
@@ -2593,7 +2668,7 @@ function ImportScriptFileDialog(retResDia) {
 	do {
 		var scriptFilesDialog = app.execDialog(AddScriptFiles_dialog);
 		if (scriptFilesDialog === "bfaq") {
-			tDoc.exportDataObject({ cName: "FAQ.pdf", nLaunch: 2 });
+			getFAQ(["faq", "pdf"]);
 		} else if (scriptFilesDialog === "bcon") {
 			console.println("\nAny changes you made in the import script files dialogue have not been applied!\nYou can run code here by pasting it in, selecting the appropriate lines and pressing " + (isWindows ? "Ctrl+Enter" : "Command+Enter") + ".");
 			console.show();

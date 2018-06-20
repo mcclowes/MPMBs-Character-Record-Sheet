@@ -434,6 +434,48 @@ var Base_CreatureList = {
 			}
 		]
 	},
+	"owlbear" : {
+		name : "Owlbear",
+		source : [["SRD", 339], ["M", 249]],
+		size : 2, //Large
+		type : "Monstrosity",
+		subtype : "",
+		alignment : "Unaligned",
+		ac : 13,
+		hp : 59,
+		hd : [7, 10], //[#, die]
+		speed : "40 ft",
+		scores : [20, 12, 17, 3, 12, 7], //[Str, Dex, Con, Int, Wis, Cha]
+		saves : ["", "", "", "", "", ""], //[Str, Dex, Con, Int, Wis, Cha]
+		skills : {
+			"perception" : 3
+		},
+		senses : "Darkvision 60 ft; Adv. on Wis (Perception) checks using sight/smell",
+		passivePerception : 13,
+		languages : "",
+		challengeRating : "3",
+		proficiencyBonus : 2,
+		attacksAction : 2,
+		attacks : [{
+				name : "Beak",
+				ability : 1,
+				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "One beak and one claws attack as an Attack action"
+			}, {
+				name : "Claws",
+				ability : 1,
+				damage : [2, 8, "slashing"], //[#, die, type] "" for die is allowed
+				range : "Melee (5 ft)",
+				description : "One claws and one beak attack as an Attack action"
+			}
+		],
+		traits : [{
+				name : "Keen Sight and Smell",
+				description : "The owlbear has advantage on Wisdom (Perception) checks that rely on sight or smell."
+			}
+		]
+	},
 	"pegasus" : {
 		name : "Pegasus",
 		source : [["SRD", 340], ["M", 250]],
@@ -650,7 +692,7 @@ var Base_CreatureList = {
 				damage : [1, 4, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target makes DC 10 Con save or takes 2d4 poison damage and poisoned for 1 min (can save each turn)",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Scare (1/day)",
 				ability : 6,
@@ -710,14 +752,16 @@ var Base_CreatureList = {
 			}
 		],
 		traits : [{
-				name : "Bound",
-				description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
-			}, {
 				name : "Regeneration",
 				description : "The guardian regains 10 HP at the start of its turn if it has at least 1 HP."
 			}, {
 				name : "Spell Storing",
 				description : "A spellcaster who wears the shield guardian's amulet can cause the guardian to store one spell of 4th level or lower. To do so, the wearer must cast the spell on the guardian. The spell has no effect but is stored within the guardian. When commanded to do so by the wearer or when a situation arises that was predefined by the spellcaster, the guardian casts the stored spell with any parameters set by the original caster, requiring no components. When the spell is cast or a new spell is stored, any previously stored spell is lost."
+			}
+		],
+		features : [{
+				name : "Bound",
+				description : "The shield guardian is magically bound to an amulet. As long as the guardian and its amulet are on the same plane of existence, the amulet's wearer can telepathically call the guardian to travel to it, and the guardian knows the distance and direction to the amulet. If the guardian is within 60 feet of the amulet's wearer, half of any damage the wearer takes (rounded up) is transferred to the guardian."
 			}
 		],
 		actions : [{
@@ -756,7 +800,7 @@ var Base_CreatureList = {
 				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Shortbow",
 				ability : 2,
@@ -811,7 +855,7 @@ var Base_CreatureList = {
 				damage : [2, 8, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Claws",
 				ability : 1,
@@ -857,7 +901,7 @@ var Base_CreatureList = {
 				damage : [2, 6, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Claws",
 				ability : 1,
@@ -1434,7 +1478,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -1475,14 +1519,14 @@ var Base_CreatureList = {
 				damage : [1, 6, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Claw",
 				ability : 1,
 				damage : [2, 4, "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -1637,14 +1681,14 @@ var Base_CreatureList = {
 				damage : [1, 8, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One bite and one claw attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Claw",
 				ability : 1,
 				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One claw and one bite attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -1679,7 +1723,7 @@ var Base_CreatureList = {
 				damage : [1, 4, "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		]
 	},
@@ -1713,7 +1757,7 @@ var Base_CreatureList = {
 				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["Str", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["Str", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -1827,7 +1871,7 @@ var Base_CreatureList = {
 				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [2, "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -2150,7 +2194,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target also takes 3d4 poison damage",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -3193,14 +3237,14 @@ var Base_CreatureList = {
 				damage : [2, 4, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One beak and one talons attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Talons",
 				ability : 1,
 				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "One talons and one beak attack as an Attack action",
-				modifiers : [-1, "", ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-1, "", ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -3395,7 +3439,7 @@ var Base_CreatureList = {
 				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -3639,7 +3683,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		]
 	},
@@ -3786,7 +3830,7 @@ var Base_CreatureList = {
 				damage : [1, "", "bludgeoning"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target is grappled (escape DC 10); Can't use tentacles again until grapple ends",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -3832,7 +3876,7 @@ var Base_CreatureList = {
 				damage : [1, "", "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -3917,7 +3961,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target also takes 2d4 poison damage, half on a DC 10 Constitution saving throw",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		]
 	},
@@ -4018,7 +4062,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -4056,7 +4100,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : [-2, "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : [-2, "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -4094,7 +4138,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -4234,14 +4278,14 @@ var Base_CreatureList = {
 				damage : [2, 6, "slashing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "If used after moving 20 ft straight in the same round, see Pounce trait",
-				modifiers : ["", 1, ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", 1, ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}, {
 				name : "Bite",
 				ability : 1,
 				damage : [1, 10, "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Can be used in combination with claw while pouncing (see Pounce trait)",
-				modifiers : ["", 1, ""], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", 1, ""] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -4337,7 +4381,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "Target also takes 1d4 poison damage, half on a DC 9 Constitution saving throw",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{
@@ -4535,7 +4579,7 @@ var Base_CreatureList = {
 				damage : [1, "", "piercing"], //[#, die, type] "" for die is allowed
 				range : "Melee (5 ft)",
 				description : "",
-				modifiers : ["", "", false], //[to hit, to damage, add ability to damage] "" means ignore
+				modifiers : ["", "", false] //[to hit, to damage, add ability to damage] "" means ignore
 			}
 		],
 		traits : [{

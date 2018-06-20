@@ -1,26 +1,33 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass & Warlock's Eldritch Invocations
 	Effect:		This script adds a subclass for the Warlock, called "The Big, Bad Wolf"
 				This script also adds 11 new Eldritch Invocations for the Warlock
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/201431/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/201431/)
 				This subclass is made by A.T. Craven
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (A.T. Craven) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=A.%20T.%20Craven
+	Please support the creator of this content (A.T. Craven) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=A.%20T.%20Craven
 */
 
 var iFileName = "Warlock - the Big, Bad Wolf [A.T. Craven's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["ATC:BBW"] = {
+	abbreviation : "ATC:BBW",
+	name : "A.T. Craven: the Big, Bad Wolf",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/201431/",
+	date : "2016/12/25"
+};
 
 AddSubClass("warlock", "the big bad wolf", {
 	regExpSearch : /^(?=.*\bbig\b)(?=.*\bbad\b)(?=.*\bwolf\b).*$/i,
@@ -81,13 +88,6 @@ AddSubClass("warlock", "the big bad wolf", {
 		}
 	}
 });
-
-SourceList["ATC:BBW"] = {
-	abbreviation : "ATC:BBW",
-	name : "A.T. Craven: the Big, Bad Wolf",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/201431/"
-};
 
 //set dire wolf and death dog as options for the pact of the chain feature
 CreatureList["dire wolf"].companion = "pact_of_the_chain";

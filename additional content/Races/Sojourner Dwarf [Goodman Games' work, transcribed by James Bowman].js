@@ -1,25 +1,32 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Sojourner Dwarf"
-				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
+				This is taken from DriveThruRPG (https://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 	
-	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
+	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: https://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
 var iFileName = "Sojourner Dwarf [Goodman Games' work, transcribed by James Bowman].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+SourceList["FEF1:G"] = {
+	name : "Fifth Edition Fantasy #1: Glitterdoom",
+	abbreviation : "FEF1:G",
+	group : "Goodman Games",
+	url : "https://www.drivethrurpg.com/product/132657/",
+	date : "2014/09/29"
+};
 
 RaceList["sojourner dwarf"] = {
 	regExpSearch : /^(((?=.*\b(dwarfs?|dwarves|dwarfish|dwarvish|dwarven)\b)(?=.*\b(sojourner)\b))).*$/i,
@@ -45,11 +52,4 @@ RaceList["sojourner dwarf"] = {
 	improvements : "Sojourner Dwarf: +2 Constitution, +1 Intelligence;",
 	scores : [0, 0, 2, 1, 0, 0],
 	trait : "Sojourner Dwarf (+2 Constitution, +1 Intelligence)\n   Stonecunning: Whenever I make an Intelligence (History) check related to the origin of stonework, I am considered proficient in the History skill and add double my proficiency bonus to the check, instead of my normal proficiency bonus.\n   Trailblazer: Whenever I make Wisdom (Survival) checks pertaining to navigation or to avoid becoming lost, I am considered proficient in the Survival skill and add double my proficiency bonus to the check, instead of my normal bonus.",
-};
-
-SourceList["FEF1:G"] = {
-	name : "Fifth Edition Fantasy #1: Glitterdoom",
-	abbreviation : "FEF1:G",
-	group : "Goodman Games",
-	url : "http://www.drivethrurpg.com/product/132657/"
 };

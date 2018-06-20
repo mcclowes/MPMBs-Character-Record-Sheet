@@ -1,21 +1,20 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Shade" and its 2 subraces
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/208791/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/208791/)
 				This subclass is made by Jeremy Forbing and is part of his "Forgotten Realms Archetypes: Savagery & Shadow"
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-03 (sheet v12.999)
 	
-	Please support the creator of this content (Jeremy Forbing) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Jeremy%20Forbing
+	Please support the creator of this content (Jeremy Forbing) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Jeremy%20Forbing
 	
 	Note that the Netherese Cantrip selection is not limited to just the three shools of magic in v12.999 of the sheet. This is something that is fixed in v13 of the sheet.
 */
@@ -27,7 +26,7 @@ SourceList["FRA:SS"] = {
 	name : "Forgotten Realms Archetypes: Savagery & Shadow (v1.2)",
 	abbreviation : "FRA:SS",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/208791/",
+	url : "https://www.dmsguild.com/product/208791/",
 	date : "2017/04/14"
 };
 

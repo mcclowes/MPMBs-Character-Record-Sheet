@@ -163,7 +163,7 @@ var Base_ClassList = {
 				name : "Primal Champion",
 				source : [["SRD", 9], ["P", 49]],
 				minlevel : 20,
-				description : "\n   " + "+4 to Strength and Constitution; Their maximums increase to 24"
+				description : "\n   " + "I add +4 to both my Strength and Constitution, and their maximums increase to 24"
 			}
 		}
 	},
@@ -213,7 +213,7 @@ var Base_ClassList = {
 				description : "\n   " + "As a bonus action, a creature in 60 ft that can hear me gets an inspiration die (max 1)" + "\n   " + "For 10 min, the recipient can add it to one ability check, attack roll, or saving throw" + "\n   " + "This addition can be done after seeing the d20 roll, but before knowing the outcome",
 				additional : ["d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12", "d12", "d12"],
 				usages : "Charisma modifier per ",
-				usagescalc : "event.value = Math.max(1, tDoc.getField('Cha Mod').value);",
+				usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
 				recovery : ["long rest", "long rest", "long rest", "long rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest", "short rest"],
 				action : ["bonus action", ""]
 			},
@@ -635,7 +635,7 @@ var Base_ClassList = {
 				source : [["SRD", 27], ["P", 78]],
 				minlevel : 4,
 				description : "\n   " + "As a reaction, I can reduce any falling damage I take by five times my monk level",
-				additional : ["", "", "", "20 less falling damage", "25 less falling damage", "30 less falling damage", "35 less falling damage", "40 less falling damage", "45 less falling damage", "50 less falling damage", "55 less falling damage", "60 less falling damage", "65 less falling damage", "70 less falling damage", "75 less falling damage", "80 less falling damage", "85 less falling damage", "90 less falling damage", "95 less falling damage", "100 less falling damage"],
+				additional : levels.map(function (n) { return n < 4 ? "" : (n*5) + " less falling damage" }),
 				action : ["reaction", ""]
 			},
 			"ki-empowered strikes" : {
@@ -739,7 +739,7 @@ var Base_ClassList = {
 				minlevel : 1,
 				description : "\n   " + "As an action, I sense celestials/fiends/undead/consecrated/desecrated within 60 ft" + "\n   " + "Until the end of my next turn, I sense the type/location if it is not behind total cover",
 				usages : "1 + Charisma modifier per ",
-				usagescalc : "event.value = 1 + tDoc.getField('Cha Mod').value;",
+				usagescalc : "event.value = 1 + What('Cha Mod');",
 				recovery : "long rest",
 				action : ["action", ""]
 			},
@@ -771,9 +771,9 @@ var Base_ClassList = {
 			},
 			"divine smite" : {
 				name : "Divine Smite",
-				source : [["SRD", 31], ["P", 84]],
+				source : [["SRD", 31], ["P", 85]],
 				minlevel : 2,
-				description : "\n   " + "When I hit someone in melee, I can expend spell slots to do 2d8 extra radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
+				description : "\n   " + "When I hit a melee weapon attack, I can expend a spell slot to do +2d8 radiant damage" + "\n   " + "This increases by +1d8 for each spell slot level above 1st and +1d8 against undead/fiends"
 			},
 			"subclassfeature3.0" : {
 				name : "Channel Divinity",
@@ -785,7 +785,7 @@ var Base_ClassList = {
 			},
 			"subclassfeature3" : {
 				name : "Sacred Oath",
-				source : [["SRD", 32], ["P", 84]],
+				source : [["SRD", 32], ["P", 85]],
 				minlevel : 3,
 				description : "\n   " + "Choose a Sacred Oath you swear to and put it in the \"Class\" field on the first page" + "\n   " + "Choose Oath of the Ancients, Crown, Devotion, Vengeance, or become an Oathbreaker"
 			},
@@ -827,7 +827,7 @@ var Base_ClassList = {
 				minlevel : 14,
 				description : "\n   " + "As an action, I can end one spell on me or another willing creature by touch",
 				usages : "Charisma modifier per ",
-				usagescalc : "event.value = Math.max(1, tDoc.getField('Cha Mod').value);",
+				usagescalc : "event.value = Math.max(1, What('Cha Mod'));",
 				recovery : "long rest",
 				action : ["action", ""]
 			}
@@ -865,7 +865,7 @@ var Base_ClassList = {
 				name : "Favored Enemy",
 				source : [["SRD", 35], ["P", 91]],
 				minlevel : 1,
-				description : "\n   " + "Use the \"Choose Features\" button above to add a favored enemy to the third page" + "\n   " + "When selecting a favored enemy, I also learn one of the languages it speaks" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them",
+				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored enemy to the third page" + "\n   " + "When selecting a favored enemy, I also learn one of the languages it speaks" + "\n   " + "I have adv. on Wis (Survival) checks to track and Int checks to recall info about them",
 				additional : ["1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "1 favored enemy", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "2 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies", "3 favored enemies"],
 				extraname : "Favored Enemy",
 				extrachoices : ["Aberrations", "Beasts", "Celestials", "Constructs", "Dragons", "Elementals", "Fey", "Fiends", "Giants", "Monstrosities", "Oozes", "Plants", "Undead", "Two Races of Humanoids"],
@@ -957,7 +957,7 @@ var Base_ClassList = {
 				name : "Natural Explorer",
 				source : [["SRD", 36], ["P", 91]],
 				minlevel : 1,
-				description : "\n   " + "Use the \"Choose Features\" button above to add a favored terrain to the third page",
+				description : "\n   " + "Use the \"Choose Feature\" button above to add a favored terrain to the third page",
 				additional : ["1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "1 favored terrain", "2 favored terrains", "2 favored terrains", "2 favored terrains", "2 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains", "3 favored terrains"],
 				extraname : "Favored Terrain",
 				extrachoices : ["Arctic", "Coast", "Desert", "Forest", "Grassland", "Mountain", "Swamp", "Underdark"],
@@ -1189,7 +1189,7 @@ var Base_ClassList = {
 	},
 
 	"sorcerer" : {
-		regExpSearch : /(sorcerer|witch)/i,
+		regExpSearch : /sorcerer|witch/i,
 		name : "Sorcerer",
 		source : [["SRD", 42], ["P", 99]],
 		primaryAbility : "\n \u2022 Sorcerer: Charisma;",
@@ -1241,7 +1241,7 @@ var Base_ClassList = {
 				name : "Metamagic",
 				source : [["SRD", 44], ["P", 101]],
 				minlevel : 3,
-				description : "\n   " + "Use the \"Choose Features\" button above to add a Metamagic option to the third page" + "\n   " + "I can use only 1 Metamagic option on a spell unless otherwise written",
+				description : "\n   " + "Use the \"Choose Feature\" button above to add a Metamagic option to the third page" + "\n   " + "I can use only 1 Metamagic option on a spell unless otherwise written",
 				additional : ["", "", "2 known", "2 known", "2 known", "2 known", "2 known", "2 known", "2 known", "3 known", "3 known", "3 known", "3 known", "3 known", "3 known", "3 known", "4 known", "4 known", "4 known", "4 known"],
 				extraname : "Metamagic Option",
 				extrachoices : ["Careful Spell", "Distant Spell", "Empowered Spell", "Extended Spell", "Heightened Spell", "Quickened Spell", "Subtle Spell", "Twinned Spell"],
@@ -1325,7 +1325,7 @@ var Base_ClassList = {
 		},
 		spellcastingList : {
 			"class" : "warlock",
-			level : [0, 5], //lower and higher limit
+			level : [0, 5] //lower and higher limit
 		},
 		features : {
 			"pact magic" : {
@@ -1345,7 +1345,7 @@ var Base_ClassList = {
 				name : "Eldritch Invocations",
 				source : [["SRD", 47], ["P", 107]],
 				minlevel : 2,
-				description : "\n   " + "Use the \"Choose Features\" button above to add Eldritch Invocations to the third page" + "\n   " + "Whenever I gain a warlock level, I can replace an invocation I know with another",
+				description : "\n   " + "Use the \"Choose Feature\" button above to add Eldritch Invocations to the third page" + "\n   " + "Whenever I gain a warlock level, I can replace an invocation I know with another",
 				additional : ["", "2 invocations known", "2 invocations known", "2 invocations known", "3 invocations known", "3 invocations known", "4 invocations known", "4 invocations known", "5 invocations known", "5 invocations known", "5 invocations known", "6 invocations known", "6 invocations known", "6 invocations known", "7 invocations known", "7 invocations known", "7 invocations known", "8 invocations known", "8 invocations known", "8 invocations known"],
 				extraname : "Eldritch Invocation",
 				extrachoices : ["Agonizing Blast (prereq: Eldritch Blast cantrip)", "Armor of Shadows", "Ascendant Step (prereq: level 9 warlock)", "Beast Speech", "Beguiling Influence", "Bewitching Whispers (prereq: level 7 warlock)", "Book of Ancient Secrets (prereq: Pact of the Tome)", "Chains of Carceri (prereq: level 15 warlock, Pact of the Chain)", "Devil's Sight", "Dreadful Word (prereq: level 7 warlock)", "Eldritch Sight", "Eldritch Spear (prereq: Eldritch Blast cantrip)", "Eyes of the Rune Keeper", "Fiendish Vigor", "Gaze of Two Minds", "Lifedrinker (prereq: level 12 warlock, Pact of the Blade)", "Mask of Many Faces", "Master of Myriad Forms (prereq: level 15 warlock)", "Minions of Chaos (prereq: level 9 warlock)", "Mire the Mind (prereq: level 5 warlock)", "Misty Visions", "One with Shadows (prereq: level 5 warlock)", "Otherworldly Leap (prereq: level 9 warlock)", "Repelling Blast (prereq: Eldritch Blast cantrip)", "Sculptor of Flesh (prereq: level 7 warlock)", "Sign of Ill Omen (prereq: level 5 warlock)", "Thief of Five Fates", "Thirsting Blade (prereq: level 5 warlock, Pact of the Blade)", "Visions of Distant Realms (prereq: level 15 warlock)", "Voice of the Chain Master (prereq: Pact of the Chain)", "Whispers of the Grave (prereq: level 9 warlock)", "Witch Sight (prereq: level 15 warlock)"],
@@ -1965,7 +1965,7 @@ var Base_ClassSubList = {
 				name : "Circle Spells",
 				source : [["SRD", 21], ["P", 68]],
 				minlevel : 3,
-				description : "\n   " + "Choose a terrain that grants you spells using the \"Choose Features\" button above",
+				description : "\n   " + "Choose a terrain that grants you spells using the \"Choose Feature\" button above",
 				choices : ["Arctic", "Coast", "Desert", "Forest", "Grassland", "Mountain", "Swamp", "Underdark"],
 				"arctic" : {
 					name : "Arctic Circle Spells",
@@ -2095,14 +2095,19 @@ var Base_ClassSubList = {
 				name : "Hand Technique",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 3,
-				description : "\n   " + "When I hit a creature with a Flurry of Blows attack I can do one of the following:" + "\n    - " + "It has to make a Dexterity save or be knocked prone" + "\n    - " + "It has to make a Strength save or I can push it up to 15 ft away from me" + "\n    - " + "It can't take reactions until the end of my next turn"
+				description : desc([
+					"Whenever I hit a creature with a Flurry of Blows attack I can do one of the following:",
+					"\u2022 Have it make a Dexterity save or be knocked prone",
+					"\u2022 Have it make a Strength save or be pushed up to 15 ft away from me",
+					"\u2022 Stop it from taking reactions until the end of my next turn"
+				])
 			},
 			"subclassfeature6" : {
 				name : "Wholeness of Body",
 				source : [["SRD", 28], ["P", 79]],
 				minlevel : 6,
 				description : "\n   " + "As an action, I regain hit points equal to three times my monk level",
-				additional : ["", "", "", "", "", "18 hit points", "21 hit points", "24 hit points", "27 hit points", "30 hit points", "33 hit points", "36 hit points", "39 hit points", "42 hit points", "45 hit points", "48 hit points", "51 hit points", "54 hit points", "57 hit points", "60 hit points"],
+				additional : levels.map(function (n) { return n < 6 ? "" : (n*3) + " hit points" }),
 				usages : 1,
 				recovery : "long rest",
 				action : ["action", ""]
@@ -2311,61 +2316,61 @@ var Base_ClassSubList = {
 				"black dragon ancestor" : {
 					name : "Black Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with black dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "acid"
 				},
 				"blue dragon ancestor" : {
 					name : "Blue Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with blue dragons, which are affiliated with lightning damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.slice(0,3).toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "lightning"
 				},
 				"brass dragon ancestor" : {
 					name : "Brass Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with brass dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"bronze dragon ancestor" : {
 					name : "Bronze Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with bronze dragons, which are affiliated with lightning dmg" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'lightning']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "lightning"
 				},
 				"copper dragon ancestor" : {
 					name : "Copper Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with copper dragons, which are affiliated with acid damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'acid']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "acid"
 				},
 				"gold dragon ancestor" : {
 					name : "Gold Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with gold dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"green dragon ancestor" : {
 					name : "Green Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with green dragons, which are affiliated with poison damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'poison']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'poison']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "poison"
 				},
 				"red dragon ancestor" : {
 					name : "Red Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with red dragons, which are affiliated with fire damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'fire']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "fire"
 				},
 				"silver dragon ancestor" : {
 					name : "Silver Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with silver dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
 				"white dragon ancestor" : {
 					name : "White Dragon Ancestor",
 					description : "\n   " + "I have draconic ancestry with white dragons, which are affiliated with cold damage" + "\n   " + "When interacting with dragons, if I can add my proficiency bonus, I can double it",
-					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && tDoc.getField('Class Features Remember').value.indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
+					eval : "var ToAdd = ['sorcerer', 'subclassfeature6', 'cold']; if (classes.known.sorcerer.level >= 6 && What('Class Features Remember').indexOf(ToAdd.toString()) === -1) {ClassFeatureOptions(ToAdd)};",
 					dragonElement : "cold"
 				},
 				languageProfs : ["Draconic"]

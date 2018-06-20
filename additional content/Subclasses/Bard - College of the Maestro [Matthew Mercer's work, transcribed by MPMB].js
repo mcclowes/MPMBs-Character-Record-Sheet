@@ -1,25 +1,33 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
-	Subject:	Subclass
+	Subject:	Subclass & Feat
 	Effect:		This script adds a subclass for the Bard, called "College of the Maestro" v1.2
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/183630/)
+				This script also adds a feat to go with the subclass, called "College of the Maestro" v1.2
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/183630/)
 				This subclass is made by Matthew Mercer
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
+	Please support the creator of this content (Matthew Mercer) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Matthew%20Mercer
 */
 
 var iFileName = "Bard - College of the Maestro [Matthew Mercer's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["MM:CM"] = {
+	name : "Matthew Mercer: College of the Maestro",
+	abbreviation : "MM:CM",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/183630/",
+	date : "2016/06/21"
+};
 
 AddSubClass("bard", "college of the maestro", {
 	regExpSearch : /^(?=.*(college|bard|minstrel|troubadour|jongleur))(?=.*maestro).*$/i,
@@ -32,7 +40,7 @@ AddSubClass("bard", "college of the maestro", {
 			minlevel : 3,
 			description : "\n   " + "I gain an extra use of my Bard Inspiration feature, and again at both level 6 and 14",
 			additional : ["", "", "+1 bardic inspiration", "+1 bardic inspiration", "+1 bardic inspiration", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+2 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations", "+3 bardic inspirations"],
-			changeeval : "var bardLVL = classes.known.bard.level; var recov = bardLVL < 5 ? \"long rest\" : \"short rest\"; var extr = bardLVL < 2 ? 0 : (bardLVL < 6 ? 1 : (bardLVL < 14 ? 2 : 3)); var addi = \" [\" + CurrentClasses.bard.features[\"bardic inspiration\"].additional[bardLVL - 1] + \"]\"; AddFeature(\"Bardic Inspiration\", \"\", addi, recov, \"Bard (College of the Maestro)\", \"replace\", \"event.value = Math.max(1 + \" + extr + \", What(\'Cha Mod\') + \" + extr + \");\");"
+			changeeval : "var bardLVL = classes.known.bard.level; var recov = bardLVL < 5 ? 'long rest' : 'short rest'; var extr = bardLVL < 2 ? 0 : (bardLVL < 6 ? 1 : (bardLVL < 14 ? 2 : 3)); var addi = ' [' + CurrentClasses.bard.features['bardic inspiration'].additional[bardLVL - 1] + ']'; if (CurrentFeats.known.indexOf('journeyman conductor') !== -1) { extr += 1; }; AddFeature('Bardic Inspiration', '', addi, recov, 'Bard (College of the Maestro)', 'replace', 'event.value = Math.max(1 + ' + extr + \", What('Cha Mod') + \" + extr + ');');"
 		},
 		"subclassfeature3.1" : {
 			name : "Symphony of Conflict",
@@ -122,9 +130,10 @@ AddSubClass("bard", "college of the maestro", {
 	}
 });
 
-SourceList["MM:CM"] = {
-	name : "Matthew Mercer: College of the Maestro",
-	abbreviation : "MM:CM",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/183630/"
+FeatsList["journeyman conductor"] = { // The limited feature listing of this feat only works if the character has either no Bard levels or has the College of the Maestro archetype
+	name : "Journeyman Conductor",
+	source : ["MM:CM", 3],
+	calculate : "event.value = 'I learn two conducting techniques of my choice from those available to the College of the Maestro. The saving throw DC for this is ' + (8 + What('Proficiency Bonus') + What('Cha Mod')) + ' (8 + proficiency bonus + Cha mod). I gain one bardic inspiration die (d6), which I regain when I finish a short rest.';",
+	eval : "if (classes.known.bard && classes.known.bard.subclass.indexOf('college of the maestro') !== -1) { UpdateLevelFeatures() } else { AddFeature('Bardic Inspiration ', 1, '(d6)', 'short rest', 'the Journeyman Conductor feat', 'bonus'); };",
+	removeeval : "if (!classes.known.bard || classes.known.bard.subclass.indexOf('college of the maestro') === -1) { RemoveFeature('Bardic Inspiration ', 1); };"
 };

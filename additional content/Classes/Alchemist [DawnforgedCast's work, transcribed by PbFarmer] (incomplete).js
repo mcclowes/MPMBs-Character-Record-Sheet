@@ -1,19 +1,16 @@
-/*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
- 
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
  
 /*  -INFORMATION-
 	Subject:	Class
 	Effect:		This script adds the class called "Alchemist" and its 3 subclasses known as Research Focuses "Arcane Distiller", "Grenadier", and "Metamorph"
 				This is taken from DawnforgedCast (https://dawnforgedcast.myshopify.com/products/5th-edition-alchemist-class)
-				This content is made by Erik J
-	Original:	Erik
-	Completed:	/u/pbfarmer
+	Code by:	/u/PbFarmer
 	Date:		2017-09-22 (sheet v12.998)
  
 	Code Version:	1.0
@@ -27,8 +24,8 @@
 	Also, automation for spell selection isn't fully functional for several of the subclass features.
 */
 
-var iFileName = "Alchemist [DawnforgedCast's work, transcribed by Erik J. & u_pbfarmer] (incomplete).js";
-RequiredSheetVersion(12.998);
+var iFileName = "Alchemist [DawnforgedCast's work, transcribed by /u/PbFarmer] (incomplete).js";
+RequiredSheetVersion(12.999);
 
 //first make the sheet know which spells are alchemist spells
 [//level 0 (cantrips)

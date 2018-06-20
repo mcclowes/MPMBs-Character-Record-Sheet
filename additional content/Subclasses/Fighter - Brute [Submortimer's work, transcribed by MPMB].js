@@ -1,10 +1,9 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
@@ -40,10 +39,10 @@ var theCoD = AddSubClass("fighter", "brute-giantitp", {
 			minlevel : 3,
 			description : "\n   " + "I can do additional damage with weapons that have the heavy property",
 			additional : levels.map(function (n) { 
-				return n < 2 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
+				return n < 3 ? "" : "+1d" + (n < 10 ? 4 : n < 18 ? 6 : 8) + " damage";
 			}),
 			calcChanges : {
-				atkAdd : ["if (classes.known.fighter && classes.known.fighter.level > 2 && (/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known.fighter.level < 10 ? 4 : classes.known.fighter.level < 18 ? 6 : 8) + ' damage'}; ", "I do +1d4 damage with weapons that have the heavy property. This increases to 1d6 at 10th level and 1d8 at 18th level"]
+				atkAdd : ["if (classes.known.fighter && classes.known.fighter.level > 2 && (/heavy/i).test(fields.Description)) {fields.Description += (fields.Description ? '; ' : '') + '+1d' + (classes.known.fighter.level < 10 ? 4 : classes.known.fighter.level < 18 ? 6 : 8) + ' damage'}; ", "I do +1d4 damage with weapons that have the heavy property. This increases to 1d6 at 10th level and 1d8 at 18th level."]
 			}
 		},
 		"subclassfeature7" : {

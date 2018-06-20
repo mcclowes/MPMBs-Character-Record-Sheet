@@ -1,25 +1,32 @@
-/*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*  -INFORMATION-
 	Subject:	Background
 	Effect:		This script adds a background, called "Primitive Tribe Member"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/208784/)
 				This background is made by Damion Meany
-	Code by:	Erik J
+	Code by:	/u/PbFarmer
 	Date:		2017-09-05 (sheet v12.998)
 
-	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
+	Please support the creator of this content (Damion Meany) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
 
-var iFileName = "Primitive Tribal Member [Damion Meany's work, transcribed by Erik J.].js";
-RequiredSheetVersion(12.998);
+var iFileName = "Primitive Tribal Member [Damion Meany's work, transcribed by /u/PbFarmer].js";
+RequiredSheetVersion(12.999);
+ 
+SourceList["DM:IB"] = {
+    name : "Damion Meany's Improved Backgrounds",
+    abbreviation : "DM:IB",
+    group : "Dungeon Masters Guild",
+    url : "https://www.dmsguild.com/product/208784/",
+	date : "2017/04/01"
+};
  
 BackgroundList["primitive tribe member"] = {
 	regExpSearch : /^(?=.*primitive)(?=.*tribe)(?=.*member).*$/i,
@@ -89,11 +96,4 @@ BackgroundList["primitive tribe member"] = {
 BackgroundFeatureList["at one with nature"] = {  
     description : "I am intimately familiar with the geography of my home region. I know exactly where water, shelter, and food can be found within several miles of my ome and am good at finding these areas when outside of my home region as well when in a climate much like it.",
     source : ["DM:IB", 63]
-};
- 
-SourceList["DM:IB"] = {
-    name : "Damion Meany's Improved Backgrounds",
-    abbreviation : "DM:IB",
-    group : "Dungeon Masters Guild",
-    url : "http://www.dmsguild.com/product/208784/"
 };

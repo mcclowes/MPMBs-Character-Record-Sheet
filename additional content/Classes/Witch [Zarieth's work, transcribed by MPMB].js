@@ -1,26 +1,34 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Class
 	Effect:		This script adds a class called the "Witch" and its 5 subclasses
-	
-				This class has been made by /u/Zarieth on the subbreddit /UnearthedArcana 
-				It can be found here: https://www.reddit.com/5dtd1x/
+
+				This class has been made by /u/Zarieth on the subbreddit /r/UnearthedArcana
+				It can be found here: https://redd.it/5dtd1x/
 				This code is based on v0.4 of /u/Zarieth's work (2017-03-06)
-					
+
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-09-21 (sheet v12.998)
 */
 
 var iFileName = "Witch [Zarieth's work, transcribed by MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+SourceList["Z:W"] = {
+	name : "/u/Zarieth: Witch (v0.4)",
+	abbreviation : "Z:W",
+	group : "Reddit/r/UnearthedArcana",
+	url : "https://redd.it/5dtd1x/",
+	date : "2017/03/04"
+};
+
 
 //first make the sheet know which spells are witch spells
 [	// cantrips
@@ -168,7 +176,7 @@ ClassList["witch (zarieth)"] = {
 				"\u25C6 Wonder: As an action, I distract all in 30 ft with my wonder: disadv. on Perception check",
 				"   Release when my spell hits or a target fails its save: Target is stunned until my next turn"
 			].join("\n"),
-			eval : "AddString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits, true); AddAction('bonus action', 'Release Spirit Bond', 'Witch (Binding Rites)'); if(!typePF) { var LayersFld = What('Extra.Layers Remember').split(','); LayersFld[0] = 'notes'; Value('Extra.Layers Remember', LayersFld); LayerVisibilityOptions(false); };",
+			eval : "AddString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits, true); AddAction('bonus action', 'Release Spirit Bond', 'Witch (Binding Rites)'); if(sheetVersion < 13) { Value('Extra.Layers Remember', 'notes,' + What('Extra.Layers Remember').split(',')[1]); LayerVisibilityOptions(false); } else { show3rdPageNotes(); };",
 			removeeval : "RemoveString('Extra.Notes', ClassList['witch (zarieth)'].features['binding rites'].spirits); RemoveAction('bonus action', 'Release Spirit Bond');"
 		},
 		"spirit ward" : {
@@ -476,11 +484,4 @@ ClassSubList["witch (zarieth)-covenant of unity"] = {
 			])
 		}
 	}
-};
-
-SourceList["Z:W"] = {
-	name : "/u/Zarieth: Witch (v0.4, 6 March 2017)",
-	abbreviation : "Z:W",
-	group : "Reddit/r/UnearthedArcana",
-	url : "https://www.reddit.com/5dtd1x/"
 };

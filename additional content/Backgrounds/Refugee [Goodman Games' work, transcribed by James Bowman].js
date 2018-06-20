@@ -1,25 +1,32 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a background, called "Refugee"
-				This is taken from DriveThruRPG (http://www.drivethrurpg.com/product/132657/)
+				This is taken from DriveThruRPG (https://www.drivethrurpg.com/product/132657/)
 				This subrace is made by Goodman Games
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-02-12 (sheet v12.81)
 	
-	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: http://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
+	Please support the creator of this content (Goodman Games) and download their Fifth Edition Fantasy material from DriveThruRPG: https://www.drivethrurpg.com/browse/pub/36/Goodman-Games/subcategory/187_22136/5E-Products
 */
 
 var iFileName = "Refugee [Goodman Games' work, transcribed by James Bowman].js";
 RequiredSheetVersion(12.81);
+
+SourceList["FEF1:G"] = {
+	name : "Fifth Edition Fantasy #1: Glitterdoom",
+	abbreviation : "FEF1:G",
+	group : "Goodman Games",
+	url : "https://www.drivethrurpg.com/product/132657/",
+	date : "2014/09/29"
+};
 
 BackgroundList["refugee"] = {
 		regExpSearch : /refugee/i,
@@ -91,11 +98,4 @@ BackgroundList["refugee"] = {
 BackgroundFeatureList["far-flung friends"] = {  
 	description : "In communities that are now home to your kith and kin, you can count on housing, food, free advice, and other assistance so long as it doesn’t threaten the lives and well-being of those lending you aid. Your DM will decide whether or not a particular community has fellow refugees amongst its population.",
 	source : ["FEF1:G", 14]
-};
-
-SourceList["FEF1:G"] = {
-	name : "Fifth Edition Fantasy #1: Glitterdoom",
-	abbreviation : "FEF1:G",
-	group : "Goodman Games",
-	url : "http://www.drivethrurpg.com/product/132657/"
 };

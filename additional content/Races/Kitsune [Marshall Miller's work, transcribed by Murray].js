@@ -1,30 +1,36 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Race
 	Effect:		This script adds a player race, called "Kitsune"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/171361/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/171361/)
 				This subclass is made by Marshall Miller
 	Code by:	Murray (with amendments by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 	
-	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Marshall%20Miller
+	Please support the creator of this content (Marshall Miller) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Marshall%20Miller
 */
 
 var iFileName = "Kitsune [Marshall Miller's work, transcribed by Murray].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+SourceList["MM:K"] = {
+	name : "Marshall Miller: Kitsune player race",
+	abbreviation : "MM:K",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/171361/",
+	date : "2016/01/18"
+};
 
 RaceList["kitsune"] = {
 	regExpSearch : /kitsune/i,
 	name : "Kitsune",
-	sortname : "Kitsune",
 	source : ["MM:K", 0],
 	plural : "Kitsune",
 	size : 3,
@@ -81,11 +87,4 @@ RaceList["kitsune"] = {
 			}
 		}
 	}
-};
-
-SourceList["MM:K"] = {
-	name : "Marshall Miller: Kitsune player race",
-	abbreviation : "MM:K",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/194789/"
 };

@@ -1,26 +1,34 @@
-/*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*  -INFORMATION-
 	Subject:    Class
 	Effect:     This script adds the class called "Shaman" and its 6 subclasses "Speaker of Ancestors", "Speaker of Dreams", "Speaker of Fire", "Speaker of Stone", "Speaker of Water", and "Speaker of Wind"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/170851/) v1.5.4
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/170851/) v1.5.4
 				This content is made by Michael Wolf
 	Original:   Derek (with amendments by MorePurpleMoreBetter)
 	Completed:  /u/Fourleafclov (with amendments by MorePurpleMoreBetter)
 	Date:		2017-09-22 (sheet v12.998)
 
-	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
+	Please support the creator of this content (Michael Wolf) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?x=0&y=0&author=Michael%20Wolf
 */
 
 var iFileName = "Shaman [Michael Wolf's work, transcribed by Derek, Fourleafclov, MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+//add the source
+SourceList["MW:SC"] = {
+	name : "Michael Wolf: Shaman Class",
+	abbreviation : "MW:SC",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/170851/",
+	date : "2017/01/20"
+};
 
 //first make the sheet know which spells are shaman spells
 [//level 0 (cantrips)
@@ -1035,12 +1043,4 @@ SpellsList["touch of madness"] = {
 	duration : "Instantaneous",
 	description : "Spell atk 1 creature, 1d4 Psychic dmg and dis. on next attack roll; +1d4 at CL 5, 11, and 17",
 	descriptionFull : "Maddening whispers and babbling nonsense rush into the mind of a creature I try to touch. Make a melee spell attack against the target. If the attack hits, the creature takes 1d4 psychic damage, and the creature has disadvantage on the next attack roll it makes before the end of its next turn." + "\n   " + "This spell’s damage increases by 1d4 when I reach 5th level (2d4), 11th level (3d4), and 17th level (4d4)"
-};
-
-//add the source
-SourceList["MW:SC"] = {
-	name : "Michael Wolf: Shaman Class",
-	abbreviation : "MW:SC",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/170851/"
 };

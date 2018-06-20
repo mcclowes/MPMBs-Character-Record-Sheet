@@ -1,22 +1,29 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Rogue, called "Thieving Magpie"
-				This is made by Firebringeraxel (http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
+				This is made by Firebringeraxel (https://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison)
 	Code by:	TwoHeadedBoy
 	Date:		2017-11-29 (sheet v12.999)
 */
 
 var iFileName = "Rogue - Thieving Magpie [Firebringeraxel's work, transcribed by TwoHeadedBoy].js";
 RequiredSheetVersion(12.999);
+
+SourceList["FC:TM"] = {
+	name: "Firebringeraxel's Creations: Thieving Magpie",
+	abbreviation: "FC:TM",
+	group: "Homebrew",
+	url: "https://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison",
+	date : "2017/07/11"
+};
 
 AddSubClass("rogue", "thieving magpie", {
 	regExpSearch: /^(?=.*thieving)(?=.*magpie).*$/i,
@@ -82,10 +89,3 @@ AddSubClass("rogue", "thieving magpie", {
 		}
 	}
 });
-
-SourceList["FC:TM"] = {
-	name: "Firebringeraxel's Creations: Thieving Magpie",
-	abbreviation: "FC:TM",
-	group: "Homebrew",
-	url: "http://firebringeraxels-junk.tumblr.com/post/162875990845/the-thieving-magpie-a-rogue-that-works-in-unison"
-};

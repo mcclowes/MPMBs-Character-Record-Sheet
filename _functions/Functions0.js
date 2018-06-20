@@ -1,4 +1,4 @@
-// all the very basic functions and text manupilation funtions
+// all the very basic functions and text manipulation functions
 var tDoc = this;
 
 function Hide(field) {
@@ -33,7 +33,7 @@ function Value(field, FldValue, tooltip, submitNm) {
 };
 
 function What(field) {
-	return tDoc.getField(field) ? tDoc.getField(field).value : "";
+	return tDoc.getField(field) ? tDoc.getField(field).value : BackwardsCompatible[field] ? eval(BackwardsCompatible[field]) : "";
 };
 
 function Who(field) {
@@ -77,137 +77,142 @@ function desc(arr) {
 	return "\n   " + arr.join("\n   ");
 };
 
-//adding a way of capitalizing every first letter of every word in a string
-String.prototype.capitalize = function () {
-	var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
-		return m.toUpperCase();
-	});
-	
-	// Certain minor words should be left lowercase unless 
-	// they are the first or last words in the string
-	lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
-	'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-	for (var Ca = 0; Ca < lowers.length; Ca++)
-	string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
-		return txt.toLowerCase();
-	});
-	
-	return string;
-};
-Number.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
-RegExp.prototype.capitalize = function () {
-	return this.toString().capitalize();
-};
+// Call all the prototypes within their own function so we can call it again when importing, forcing the latest version
+function setPrototypes() {
+	//adding a way of capitalizing every first letter of every word in a string
+	String.prototype.capitalize = function () {
+		var string = this.toLowerCase().replace(/([^']|^)\b\w/g, function (m) {
+			return m.toUpperCase();
+		});
+		
+		// Certain minor words should be left lowercase unless 
+		// they are the first or last words in the string
+		lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At', 
+		'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
+		for (var Ca = 0; Ca < lowers.length; Ca++)
+		string = string.replace(new RegExp('\\W' + lowers[Ca] + '\\W', 'g'), function(txt) {
+			return txt.toLowerCase();
+		});
+		
+		return string;
+	};
+	Number.prototype.capitalize = function () {
+		return this.toString().capitalize();
+	};
+	RegExp.prototype.capitalize = function () {
+		return this.toString().capitalize();
+	};
 
-//adding a way to convert a string with special characters into a regular expression
-String.prototype.RegEscape = function () {
-	return this.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-Number.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
-RegExp.prototype.RegEscape = function () {
-	return this.toString().RegEscape();
-};
+	//adding a way to convert a string with special characters into a regular expression
+	String.prototype.RegEscape = function () {
+		return this.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	};
+	Number.prototype.RegEscape = function () {
+		return this.toString().RegEscape();
+	};
+	RegExp.prototype.RegEscape = function () {
+		return this.toString().RegEscape();
+	};
 
-//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
-Number.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-Number.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Number.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Number.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Number.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-Number.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Number.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Number.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Number.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Number.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-RegExp.prototype.indexOf = function (searchValue, fromIndex) {
-	return this.toString().indexOf(searchValue, fromIndex);
-};
-RegExp.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-RegExp.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-RegExp.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-RegExp.prototype.slice = function (beginSlice, endSlice) {
-	return this.toString().slice(beginSlice, endSlice);
-};
-RegExp.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-RegExp.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-RegExp.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-RegExp.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-RegExp.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-Array.prototype.match = function (regexpObj) {
-	return this.toString().match(regexpObj);
-};
-Array.prototype.replace = function (regexp_substr, newSubStr_function) {
-	return this.toString().replace(regexp_substr, newSubStr_function);
-};
-Array.prototype.search = function (regexpObj) {
-	return this.toString().search(regexpObj);
-};
-Array.prototype.split = function (separator, limit) {
-	return this.toString().split(separator, limit);
-};
-Array.prototype.substring = function (indexStart, indexEnd) {
-	return this.toString().substring(indexStart, indexEnd);
-};
-Array.prototype.substr = function (start, length) {
-	return this.toString().substr(start, length);
-};
-Array.prototype.toLowerCase = function () {
-	return this.toString().toLowerCase();
-};
-Array.prototype.toUpperCase = function () {
-	return this.toString().toUpperCase();
-};
-Array.prototype.trailingIndexOf = function(e) {
-    var index = -1, len = this.length;
-    for (var i = len - 1; i > -1; i--) {
-        if (i in this && e === this[i]) {
-            index = i;
-        } else {
-			break;
+	//define a way for numbers and regular expressions to return an indexOf(), match(), replace(), search(), slice(), split(), substring(), substr(), toLowerCase(), or toUpperCase() to avoid errors
+	Number.prototype.indexOf = function (searchValue, fromIndex) {
+		return this.toString().indexOf(searchValue, fromIndex);
+	};
+	Number.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	Number.prototype.replace = function (regexp_substr, newSubStr_function) {
+		return this.toString().replace(regexp_substr, newSubStr_function);
+	};
+	Number.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	Number.prototype.slice = function (beginSlice, endSlice) {
+		return this.toString().slice(beginSlice, endSlice);
+	};
+	Number.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	Number.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	Number.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	Number.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	Number.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	RegExp.prototype.indexOf = function (searchValue, fromIndex) {
+		return this.toString().indexOf(searchValue, fromIndex);
+	};
+	RegExp.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	RegExp.prototype.replace = function(oldstr, newstr) {
+		var a = this.toString();
+		return RegExp(a.replace(/^\/|\/\w*$/g, "").replace(oldstr, newstr), a.match(/\/\w*$/)[0].replace("/", ""));
+	};
+	RegExp.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	RegExp.prototype.slice = function (beginSlice, endSlice) {
+		return this.toString().slice(beginSlice, endSlice);
+	};
+	RegExp.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	RegExp.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	RegExp.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	RegExp.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	RegExp.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	Array.prototype.match = function (regexpObj) {
+		return this.toString().match(regexpObj);
+	};
+	Array.prototype.replace = function (regexp_substr, newSubStr_function) {
+		return this.toString().replace(regexp_substr, newSubStr_function);
+	};
+	Array.prototype.search = function (regexpObj) {
+		return this.toString().search(regexpObj);
+	};
+	Array.prototype.split = function (separator, limit) {
+		return this.toString().split(separator, limit);
+	};
+	Array.prototype.substring = function (indexStart, indexEnd) {
+		return this.toString().substring(indexStart, indexEnd);
+	};
+	Array.prototype.substr = function (start, length) {
+		return this.toString().substr(start, length);
+	};
+	Array.prototype.toLowerCase = function () {
+		return this.toString().toLowerCase();
+	};
+	Array.prototype.toUpperCase = function () {
+		return this.toString().toUpperCase();
+	};
+	Array.prototype.trailingIndexOf = function(e) {
+		var index = -1, len = this.length;
+		for (var i = len - 1; i > -1; i--) {
+			if (i in this && e === this[i]) {
+				index = i;
+			} else {
+				break;
+			}
 		}
-    }
-    return index;
+		return index;
+	};
 };
+setPrototypes();
 
 function ChangeWidth(field, amount) {
 	var Fld = tDoc.getField(field);
@@ -355,7 +360,7 @@ function FormatHD() {
 	var theResult = clean(event.value, " ");
 	if (theResult !== "") {
 		var QI = getTemplPre(event.target.name, "AScomp");
-		var theCon = Number(What(QI ? "Con Mod" : QI + "Comp.Use.Ability.Con.Mod"));
+		var theCon = Number(What(QI === true ? "Con Mod" : QI + "Comp.Use.Ability.Con.Mod"));
 		event.value = "d" + theResult + (theCon < 0 ? theCon : "+" + theCon);
 	}
 };
@@ -374,7 +379,7 @@ function KeystrokeDay() {
 			event.value = "";
 			if (IsNotImport) {
 				app.alert({
-					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, but only the way it is displayed.",
+					cMsg : "Please enter a valid date using the date-picker (the little arrow in the field) or enter the date manually using of the form \"Year-Month-Day\".\n\nYou can change the way the date is displayed with the \"Logsheet Options\" at the top of each Adventurers Logsheet. Note that the format of the date in the field never changes, only the way it is displayed.",
 					cTitle : "Invalid date format",
 					nIcon : 1
 				});
@@ -424,46 +429,68 @@ function ObjLength(theObj) {
 	return size;
 };
 
-//start a progress dialog. input can be a value to add, the command "stop" to stop, or a string to display.
-function thermoM(input) {
+
+
+// start a progress dialog
+// input can be a percentage of the progress or a string to display
+// if remove is set to true, the entry corresponding to the input text is removed
+// if remove is set to false, overwrite the current entry
+function thermoM(input, remove) {
+	if (input === "start" || !IsNotImport || IsNotImport === "no progress bar") return "";
 	var t = app.thermometer;
-	var dT = 100;
-	if (input === undefined || input === false || t.cancelled === true) {
-		for (var i = 1; i <= thermoCount.length; i++) { t.end(); };
-		thermoCount = [];
-		thermoDur = {};
-		tDoc.calculate = IsNotReset;
-		tDoc.delay = !IsNotReset;
-		if (IsNotReset) { tDoc.calculateNow(); };
+	if (!input || input.toLowerCase() == "stop") {
+		if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
+		return "";
 	}
-	if (input === undefined || input === false) {
-		return;
-	} else if (isNaN(input)) {
-		if (input === "start" && t.text !== "Applying changes...") {
+	var dT = 10;
+	if (remove !== undefined && isNaN(input)) { // remove the input if remove = true, or the latest entry if remove = false
+		var toRem = remove ? input : thermoCount[thermoCount.length -1];
+		if (thermoCount.indexOf(toRem) !== -1) {
+			thermoCount.splice(thermoCount.indexOf(toRem), 1);
+			if (!remove) thermoDur[input] = thermoDur[toRem];
+			delete thermoDur[toRem];
+			if (remove && thermoCount.length) {
+				t.text = thermoCount[thermoCount.length -1];
+				t.value = thermoDur[t.text];
+			}
+		}
+	}
+	if (!remove && isNaN(input)) { // start new with the input text
+		if (t.text == undefined) {
 			t.begin();
 			t.duration = dT;
-			t.value = 1;
-			t.text = "Applying changes...";
-			thermoCount.push("Applying changes...");
-			thermoDur["Applying changes..."] = 1;
-		} else if (input === "start" || input === "stop" || (thermoCount.indexOf("Applying changes...") !== thermoCount.length - 1 && thermoCount.indexOf("Applying changes...") !== -1)) {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
-			delete thermoDur[t.text];
-			t.end();
-			if (thermoCount.length) {
-				t.text = thermoCount[thermoCount.length - 1];
-				t.value = thermoDur[thermoCount[thermoCount.length - 1]];
-			}
-		} else {
-			thermoCount.splice(thermoCount.indexOf(t.text), 1);
+		}
+		t.text = input;
+		if (thermoCount.indexOf(input) == -1) {
 			thermoCount.push(input);
-			t.text = input;
+			t.value = thermoDur[input] ? thermoDur[input] : 1;
+			thermoDur[input] = t.value;
+		} else {
+			t.value++;
 			thermoDur[input] = t.value;
 		}
-	} else if (!isNaN(input)) {
-		t.value = input * dT;
-		thermoDur[thermoCount[thermoCount.length - 1]] = input * dT;
+	} else if (!remove && t.text != undefined) { // update progress with the input number (if there is an active progress bar)
+		t.value = dT * input;
+		thermoDur[thermoCount[thermoCount.length -1]] = t.value;
 	}
+	// close all dialogs half a second after the last bit of code finishes
+	if (!thermoStopSet && t.text != undefined) thermoStopSet = app.setTimeOut("thermoStop();", 500);
+	return t.text != undefined ? t.text : "";
+};
+
+// end all instances of the progress dialog
+function thermoStop() {
+	if (thermoStopSet) {
+		app.clearTimeOut(thermoStopSet);
+		thermoStopSet = false;
+	}
+	thermoCount = [];
+	thermoDur = {};
+	var i = 0;
+	while(i < 1000 && app.thermometer.text != undefined) {
+		app.thermometer.end();
+		i++
+	};
 };
 
 //test if a font works or not
@@ -1007,4 +1034,81 @@ function newObj(inObj) {
 function getTemplPre(tName, templ, rEmpty) {
 	templ = templ + ".";
 	return tName.indexOf(templ) === -1 ? (rEmpty ? "" : true) : tName.substring(0, tName.indexOf(templ)) + templ;
+};
+
+// Change a number to a 2-spaced semantic versioning scheme (13.011 -> 13.1.10)
+function nmbrToSemanticVersion(inNmbr) {
+	inNmbr = parseFloat(inNmbr);
+	if (isNaN(inNmbr)) return 0;
+	var strV = inNmbr.toString().split(".");
+	var versStr = [strV[0]];
+	if (strV[1]) {
+		for (var i = 0; i < strV[1].length; i++) {
+			var partI2 = strV[1][i] + (strV[1][i+1] ? strV[1][i+1] : 0);
+			versStr.push(Number(partI2));
+			i++
+		};
+	};
+	var theSemV = versStr.join(".").toString();
+	if (versStr.length < 3) {
+		for (var i = versStr.length; i < 3; i++) theSemV += ".0";
+	};
+	return theSemV;
+};
+
+// Change a semantic versioning scheme to a number (13.1.10 -> 13.011)
+function semVersToNmbr(inSemV) {
+	if (!isNaN(inSemV)) return Number(inSemV);
+	if (isNaN(parseFloat(inSemV))) {
+		if (!(/\d/).test(inSemV)) return 0;
+		inSemV = inSemV.replace(/.*?(\d.*)/, "$1");
+	};
+	var strV = inSemV.toString().split(".");
+	var nmbrStr = [strV[0], ""];
+	if (strV[1]) {
+		for (var i = 1; i < strV.length; i++) {
+			var nmbrAdd = parseFloat(strV[i]);
+			if (isNaN(nmbrAdd)) continue;
+			nmbrStr[1] += ("0" + nmbrAdd).slice(-2);
+		};
+	};
+	if (strV.length) nmbrStr.push(strV.join(""));
+	var nmbr = parseFloat(nmbrStr.join("."));
+	return isNaN(nmbr) ? 0 : nmbr;
+};
+
+// Stop calculations and drawing of fields in the whole PDF to speed up changes
+// give a namedStop to make sure that it only can be started again with the same namedStop (and if no other namedStops are present)
+function calcStop() {
+	app.calculate = false;
+	tDoc.calculate = false;
+	tDoc.delay = true;
+	if (!calcStartSet) calcStartSet = app.setTimeOut("calcCont();", 250);
+};
+
+// function to start the calculations of the PDF again
+function calcCont() {
+	if (calcStartSet) {
+		app.clearTimeOut(calcStartSet);
+		calcStartSet = false;
+	}
+	app.calculate = true;
+	tDoc.calculate = true;
+	tDoc.delay = false;
+	tDoc.calculateNow();
+	thermoStop();
+};
+
+// function to find the value (date) of a source
+function sourceDate(srcArr) {
+	if (!srcArr) return 0;
+	srcArr = !isArray(srcArr) ? [srcArr] : [].concat.apply([], srcArr);
+	var dateArr = [0];
+	for (var i = 0; i < srcArr.length; i++) {
+		var src = srcArr[i];
+		if (!SourceList[src] || CurrentSources.globalExcl.indexOf(src) !== -1) continue;
+		var srcDate = SourceList[src].date ? Number(SourceList[src].date.replace(/\D/g, "")) : src === "HB" ? 90001231 : 'stop';
+		if (!isNaN(srcDate)) dateArr.push(srcDate);
+	};
+	return Math.max.apply(Math, dateArr);
 };

@@ -1,22 +1,21 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the druid, called "Circle of the Deathbloom"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/173273) and is the version from 31st of August 2016
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/173273) and is the version from 31st of August 2016
 				This subclass is made by Stray Chow Chow
 				Note that this is not the latest version of this subclass and the author of it no longer actively supports it on DMs Guild
 	Code by:	MorePurpleMoreBetter
 	Date:		2018-01-02 (sheet v12.999)
 	
-	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
+	Please support the creator of this content (Stray Chow Chow) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=Stray%20Chow%20Chow
 	
 	Note that although the Druid is able to wild shape into blights, those won't appear in the menu. You can use these wild shapes only by typing the name of the creature into the "Make a Selection" drop-down box on the Wild Shape pages.
 	Also, this script doesn't include a way to add the Spore Servant template to wild shapes.
@@ -29,7 +28,7 @@ SourceList["SCC:CD"] = {
 	name : "Stray Chow Chow - Circle of the Deathbloom",
 	abbreviation : "SCC:CD",
 	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/173273",
+	url : "https://www.dmsguild.com/product/173273",
 	date : "2016/08/31"
 };
 
@@ -191,7 +190,7 @@ if (!CreatureList["needle blight"] || !CreatureList["twig blight"] || !CreatureL
 		name : "Monster Manual",
 		abbreviation : "MM",
 		group : "Primary Sources",
-		url : "http://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual",
+		url : "https://dnd.wizards.com/products/tabletop-games/rpg-products/monster-manual",
 		date : "2014/09/30"
 	};
 	if (!CreatureList["needle blight"]) {

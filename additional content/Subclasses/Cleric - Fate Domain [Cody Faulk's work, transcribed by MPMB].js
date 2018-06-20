@@ -1,25 +1,32 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Subclass
 	Effect:		This script adds a subclass for the Cleric, called "Fate Domain"
-				This is taken from the DMs Guild website (http://www.dmsguild.com/product/194789/)
+				This is taken from the DMs Guild website (https://www.dmsguild.com/product/194789/)
 				This subclass is made by Cody Faulk
 	Code by:	MorePurpleMoreBetter
 	Date:		2017-11-29 (sheet v12.999)
 	
-	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: http://www.dmsguild.com/browse.php?author=Cody%20Faulk
+	Please support the creator of this content (Cody Faulk) and download his material from the DMs Guild website: https://www.dmsguild.com/browse.php?author=Cody%20Faulk
 */
 
 var iFileName = "Cleric - Fate Domain [Cody Faulk's work, transcribed by MPMB].js";
 RequiredSheetVersion(12.999);
+
+SourceList["CF:FD"] = {
+	name : "Cody Faulk: Fate Domain",
+	abbreviation : "CF:FD",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/194789/",
+	date : "2016/12/08"
+};
 
 AddSubClass("cleric", "fate domain", {
 	regExpSearch : /^(?=.*(cleric|priest|clergy|acolyte))(?=.*fate).*$/i,
@@ -73,10 +80,3 @@ AddSubClass("cleric", "fate domain", {
 		}
 	}
 });
-
-SourceList["CF:FD"] = {
-	name : "Cody Faulk: Fate Domain",
-	abbreviation : "CF:FD",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/194789/"
-};

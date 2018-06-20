@@ -235,11 +235,15 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		};
 	};
 	if (isFirstTime || forceDDupdate) {
-		var exclAllUA = isFirstTime || CurrentSources.globalExcl.toSource().toLowerCase().indexOf('"ua:') !== -1 || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"ua:') === -1;
+		var uaRegex = /,ua:\w*/ig;
+		var prevUAknown = !isFirstTime && (uaRegex).test(CurrentSources.globalKnown) ? CurrentSources.globalKnown.match(uaRegex).length : 0;
+		var prevUAexcl = isFirstTime || !prevUAknown ? 0 : (uaRegex).test(CurrentSources.globalExcl) ? CurrentSources.globalExcl.match(uaRegex).length : 0;
+		var exclAllUA = isFirstTime || !prevUAknown || prevUAknown === prevUAexcl;
 		var exclDMGfirearms = isFirstTime || CurrentSources.globalKnown.toSource().toLowerCase().indexOf('"D"') === -1;
+		CurrentSources.globalKnown = [];
 		for (var src in SourceList) {
 			if (this.info.SpellsOnly && spellSources.indexOf(src) === -1) continue;
-			if (exclAllUA && SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
+			if (exclAllUA && CurrentSources.globalExcl.indexOf(src) === - 1 && SourceList[src].group === "Unearthed Arcana") CurrentSources.globalExcl.push(src);
 			CurrentSources.globalKnown.push(src);
 		};
 		if (!minVer && exclDMGfirearms) { // set all the DMG firearms to be excluded the first time they are added
@@ -270,7 +274,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (srcGroup !== "Primary Sources") srcGroup = "\u200B" + srcGroup;
 		if (!exclObj[srcGroup]) exclObj[srcGroup] = {};
 		if (!inclObj[srcGroup]) inclObj[srcGroup] = {};
-		if (CurrentSources.globalExcl.indexOf(src) !== -1 || (srcGroup === "\u200BUnearthed Arcana" && CurrentSources.globalKnown.indexOf(src) === -1)) {
+		if (CurrentSources.globalExcl.indexOf(src) !== -1) {
 			exclObj[srcGroup][srcName] = -1;
 		} else {
 			inclObj[srcGroup][srcName] = -1;
@@ -452,7 +456,7 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		bArm : function (dialog) {resourceSelectionDialog("armor");},
 		bAmm : function (dialog) {resourceSelectionDialog("ammo");},
 		bLin : function (dialog) {if (this.sourceLink) app.launchURL(this.sourceLink, true)},
-		bSrc : function (dialog) { ShowDialog("List of Sources, sorted by abbreviation", "sources"); },
+		bSrc : function (dialog) { MakeSourceMenu_SourceOptions(); },
 		bMor : function (dialog) {
 			var MenuSelection = getMenu("importscripts");
 			if (MenuSelection !== undefined && MenuSelection[0] !== "nothing") {
@@ -714,6 +718,9 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 	if (CallDialogue === "scrp") {
 		ImportScriptOptions(selectionDialogue.scrpMenu);
 	} else if (CallDialogue === "ok" || forceDDupdate) {
+		// Start progress bar and stop calculations
+		var thermoTxt = thermoM("Applying the changes to the sources...");
+		calcStop();
 		UpdateDropdown("resources");
 		
 		//if something changed for the spells make the spell menu again
@@ -721,6 +728,8 @@ function resourceDecisionDialog(atOpening, atReset, forceDDupdate) {
 		if (forceDDupdate || oldCS.globalExcl !== CurrentSources.globalExcl || oldCS.classExcl !== CurrentSources.classExcl || oldCS.spellsExcl !== CurrentSources.spellsExcl) {
 			setSpellVariables(forceDDupdate || oldCS.spellsExcl !== CurrentSources.spellsExcl);
 		};
+		if (forceDDupdate) SetGearVariables();
+		thermoM(thermoTxt, true); // Stop progress bar
 	};
 };
 
@@ -1242,5 +1251,108 @@ function stringSource(obj, verbosity, prefix, suffix) {
 		return theRe ? (prefix ? prefix : "") + theRe + (suffix ? suffix : "") : "";
 	} else {
 		return "";
+	};
+};
+
+// make a menu off all the sources where clicking on them gets you to their linked URL
+function MakeSourceMenu_SourceOptions() {
+	var SourceMenu = [{
+		cName : "[clicking a source will open a web page]",
+		bEnabled : false
+	}, {
+		cName : "All",
+		oSubMenu : []
+	}, {
+		cName : "Primary Sources",
+		oSubMenu : []
+	}, {
+		cName : "Adventure Books",
+		oSubMenu : []
+	}, {
+		cName : "Adventurers League",
+		oSubMenu : []
+	}, {
+		cName : "Unearthed Arcana",
+		oSubMenu : []
+	}];
+	
+	var menuLoc = {
+		"primary sources" : 2,
+		"adventure books" : 3,
+		"adventurers league" : 4,
+		"unearthed arcana" : 5
+	};
+	
+	var abbrObj = { arr : [], obj : {}, lowObj : {} };
+	for (var aSource in SourceList) {
+		abbrObj.arr.push(SourceList[aSource].abbreviation);
+		abbrObj.obj[SourceList[aSource].abbreviation] = aSource;
+		abbrObj.lowObj[aSource.toLowerCase()] = aSource;
+	};
+	abbrObj.arr.sort();
+	
+	var extraMenuItems = false;
+	for (var i = 0; i < abbrObj.arr.length; i++) {
+		var aSource = abbrObj.obj[abbrObj.arr[i]];
+		if (/^(DMguild|HB)$/.test(aSource)) continue;
+		var src = SourceList[aSource];
+		var theIndex = menuLoc[src.group.toLowerCase()];
+		if (!theIndex) {
+			if (!extraMenuItems) {
+				SourceMenu.push({ cName : "-" });
+				extraMenuItems = true;
+			};
+			theIndex = SourceMenu.length;
+			SourceMenu.push({
+				cName : src.group,
+				oSubMenu : []
+			});
+			menuLoc[src.group.toLowerCase()] = theIndex;
+		};
+		
+		var allItem = {
+			cName : (src.abbreviation + (new Array(10)).join("\u2002")).substr(0, 10) + src.name,
+			cReturn : "sourcelist#" + aSource
+		};
+		if ((/(\d+\/\d+\/\d+)(.*)/).test(allItem.cName)) allItem.cName = allItem.cName.replace(/(\d+\/\d+\/\d+)(.*)/, "$2 ($1)");
+		SourceMenu[1].oSubMenu.push(allItem);
+		var srcItem = {
+			cName : allItem.cName.replace(RegExp(src.group + ":? ?", "i"), ""),
+			cReturn : allItem.cReturn
+		};
+		SourceMenu[theIndex].oSubMenu.push(srcItem);
+	};
+	
+	for (var entry in SourceMenu) {
+		if (SourceMenu[entry].oSubMenu) {
+			if (!SourceMenu[entry].oSubMenu.length) {
+				delete SourceMenu[entry];
+				continue;
+			}
+			SourceMenu[entry].oSubMenu.sort();
+		}
+	}
+	
+	SourceMenu.push({ cName : "-" });
+	SourceMenu.push({
+		cName : "Open a dialogue with a list of the sources",
+		cReturn : "sourcelist#dialogue"
+	});
+	
+	//parse it into a global variable
+	Menus.sources = SourceMenu;
+	
+	//now call the menu
+	var MenuSelection = getMenu("sources");
+	
+	if (!MenuSelection || MenuSelection[0] == "nothing") return;
+	if (MenuSelection[1] === "dialogue") {
+		ShowDialog("List of Sources, sorted by abbreviation", "sources");
+		return;
+	};
+	var theSrc = abbrObj.lowObj[MenuSelection[1]];
+	
+	if (SourceList[theSrc].url) {
+		app.launchURL(SourceList[theSrc].url, true);
 	};
 };

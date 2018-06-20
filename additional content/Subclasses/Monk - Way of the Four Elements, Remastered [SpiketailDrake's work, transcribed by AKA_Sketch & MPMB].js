@@ -1,10 +1,9 @@
-/*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*  -INFORMATION-
@@ -27,10 +26,20 @@
 */
 
 var iFileName = "Monk - Way of the Four Elements, Remastered [SpiketailDrake's work, transcribed by AKA_Sketch & MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 var WotFEremastered = function() {
+	
 	if (!ClassSubList["monk-way of the four elements"]) return;
+
+	SourceList["IB:WotFE"] = {
+		name : "Way of the Four Elements Remastered (v2.0, 2017-02-18, by IrisBandit)",
+		abbreviation : "IB:WotFE",
+		group : "IrishBandit",
+		url : "https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view",
+		date : "2017/02/18"
+	};
+	
 	ClassSubList["monk-way of the four elements"].source = ["IB:WotFE", 1];
 	ClassSubList["monk-way of the four elements"].spellcastingFactor = "default0";
 	ClassSubList["monk-way of the four elements"].spellcastingKnown = {
@@ -694,12 +703,5 @@ var WotFEremastered = function() {
 				return (n < 11 ? 1 : n < 17 ? 2 : 3) + " extra disciplines";
 			})
 		}	
-	};
-
-	SourceList["IB:WotFE"] = {
-		name : "Way of the Four Elements Remastered (v2.0, 2017-02-18, by IrisBandit)",
-		abbreviation : "IB:WotFE",
-		group : "IrishBandit",
-		url : "https://drive.google.com/file/d/0B5ttoyMfsaC7dzJ2SVdKNXhxVnM/view"
 	};
 }();

@@ -1,10 +1,9 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
@@ -17,7 +16,14 @@
 */
 
 var iFileName = "Dhampir [DanDwiki, transcribed by MPMB].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+SourceList["DanDw"] = {
+	name : "D\u0026D Wiki",
+	abbreviation : "D\u0026Dw",
+	group : "homebrew",
+	url : "https://www.dandwiki.com/wiki/"
+};
 
 RaceList["dhampir"] = {
 	regExpSearch : /dhampir/i,
@@ -75,11 +81,4 @@ WeaponsList["vampire bite"] = {
 	range : "Melee",
 	description : "Finesse; Only on charmed, grappled, incapacitated, or restrained; Can gain temp HP",
 	abilitytodamage : true
-};
-
-SourceList["DanDw"] = {
-	name : "D\u0026D Wiki",
-	abbreviation : "D\u0026Dw",
-	group : "homebrew",
-	url : "http://www.dandwiki.com/wiki/"
 };

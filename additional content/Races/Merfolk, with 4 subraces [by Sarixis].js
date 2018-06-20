@@ -1,10 +1,9 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
@@ -15,11 +14,12 @@
 */
 
 var iFileName = "Merfolk, with 4 subraces [by Sarixis].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
 
 RaceList["ocean merfolk"] = {
-	regExpSearch : /^(?=.*merfolk)(?=.*ocean|sea).*$/i,
+	regExpSearch : /^(?=.*merfolk)(?=.*(ocean|sea)).*$/i,
 	name : "Ocean Merfolk",
+	sortname : "Merfolk, Ocean",
 	source : ["HB", 0],
 	plural : "Ocean Merfolk",
 	size : 3,
@@ -71,6 +71,7 @@ RaceList["ocean merfolk"] = {
 RaceList["river merfolk"] = {
 	regExpSearch : /^(?=.*merfolk)(?=.*river).*$/i,
 	name : "River Merfolk",
+	sortname : "Merfolk, River",
 	source : ["HB", 0],
 	plural : "River Merfolk",
 	size : 3,
@@ -115,6 +116,7 @@ RaceList["river merfolk"] = {
 RaceList["deep merfolk"] = {
 	regExpSearch : /^(?=.*merfolk)(?=.*deep).*$/i,
 	name : "Deep Merfolk",
+	sortname : "Merfolk, Deep",
 	source : ["HB", 0],
 	plural : "Deep Merfolk",
 	size : 3,
@@ -160,6 +162,7 @@ RaceList["deep merfolk"] = {
 RaceList["awakened merrow"] = {
 	regExpSearch : /^(?=.*awakened)(?=.*merrow).*$/i,
 	name : "Awakened Merrow",
+	sortname : "Merfolk, Awakened Merrow",
 	source : ["HB", 0],
 	plural : "Awakened Merrow",
 	size : 3,

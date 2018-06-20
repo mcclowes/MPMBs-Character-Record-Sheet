@@ -1,25 +1,32 @@
 /*	-WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
-	
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
+
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*	-INFORMATION-
 	Subject:	Background
 	Effect:		This script adds a background, called "Legendary Lineage"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/171771)
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/171771)
 				This background is made by James Introcaso
 	Code by:	James Bowman (based on work by MorePurpleMoreBetter)
 	Date:		2017-09-05 (sheet v12.998)
 	
-	Please support the creator of this content (James Introcaso) and download their material from DM Guild: http://www.dmsguild.com/browse.php?author=James%20Introcaso
+	Please support the creator of this content (James Introcaso) and download their material from DM Guild: https://www.dmsguild.com/browse.php?author=James%20Introcaso
 */
 
 var iFileName = "Legendary Lineage [James Introcaso's work, transcribed by James Bowman].js";
-RequiredSheetVersion(12.998);
+RequiredSheetVersion(12.999);
+
+SourceList["WBB:15"] = {
+	name : "15 New Backgrounds - World Builder Blog Presents",
+	abbreviation : "WBB:15",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/171771",
+	date : "2016/01/22"
+};
 
 BackgroundList["legendary lineage"] = {
 		regExpSearch : /^(?=.*(legendary))(?=.*lineage).*$/i,
@@ -92,11 +99,4 @@ BackgroundList["legendary lineage"] = {
 BackgroundFeatureList["good reputation"] = {  
 	description : "People in positions of power and privilege are willing to take a meeting with you and grant you favors. The DM decides the extent and effect of these favors, but they should not involve lavish gifts or great personal risk to the granter.",
 	source : ["WBB:15", 10]
-};
-
-SourceList["WBB:15"] = {
-	name : "15 New Backgrounds - World Builder Blog Presents",
-	abbreviation : "WBB:15",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/171771"
 };

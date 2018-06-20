@@ -1,25 +1,32 @@
-/*  -WHAT IS THIS?-
-	The script featured here is made as an optional addition to "MPMB's Character Record Sheet" found at http://flapkan.com/mpmb/dmsguild
-	You can add the content to the Character Sheet's functionality by adding the script below in the "Add Custom Script" dialogue.
+/*	-WHAT IS THIS?-
+	This file adds optional material to "MPMB's Character Record Sheet" found at https://flapkan.com/mpmb/charsheets
+	Import this file using the "Add Extra Materials" bookmark.
 
 	-KEEP IN MIND-
-	Note that you can add as many custom codes as you want, but you have to add the code in at once (i.e. copy all the code into a single, long file and copy that into the sheet).
-	It is recommended to enter the code in a fresh sheet before adding any other information.
+	It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 */
 
 /*  -INFORMATION-
 	Subject:	Background
 	Effect:		This script adds a background, called "Apprentice Alchemist"
-				This is taken from Dungeon Masters Guild (http://www.dmsguild.com/product/208784/)
+				This is taken from Dungeon Masters Guild (https://www.dmsguild.com/product/208784/)
 				This background is made by Damion Meany
-	Code by:	Erik J
+	Code by:	/u/PbFarmer
 	Date:		2017-09-05 (sheet v12.998)
 
-	Please support the creator of this content (Damion Meany) and download his material from DM Guild: http://www.dmsguild.com/browse.php?author=Damion%20Meany
+	Please support the creator of this content (Damion Meany) and download his material from DM Guild: https://www.dmsguild.com/browse.php?author=Damion%20Meany
 */
 
-var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by Erik J.].js";
-RequiredSheetVersion(12.998);
+var iFileName = "Apprentice Alchemist [Damion Meany's work, transcribed by /u/PbFarmer].js";
+RequiredSheetVersion(12.999);
+
+SourceList["DM:IB"] = {
+	name : "Damion Meany's Improved Backgrounds",
+	abbreviation : "DM:IB",
+	group : "Dungeon Masters Guild",
+	url : "https://www.dmsguild.com/product/208784/",
+	date : "2017/04/04"
+};
 
 BackgroundList["apprentice alchemist"] = {
 	regExpSearch : /^(?=.*apprentice)(?=.*alchemist).*$/i,
@@ -92,11 +99,4 @@ BackgroundList["apprentice alchemist"] = {
 BackgroundFeatureList["alchemical familiarity"] = {
 	description : "I have an ongoing relationship with my mentor, whom I am able to contact to request advice or assistance, even when far away.  I can often identify potions, salves, oils, and other mundane and magical consumables by sight.  In addition, my familiarity with alchemy enables me to work in an Alchemist's lab or shop to earn a modest living during my down time.",
 	source : ["DM:IB", 11]
-};
-
-SourceList["DM:IB"] = {
-	name : "Damion Meany's Improved Backgrounds",
-	abbreviation : "DM:IB",
-	group : "Dungeon Masters Guild",
-	url : "http://www.dmsguild.com/product/208784/"
 };
